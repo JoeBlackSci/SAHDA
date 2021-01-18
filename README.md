@@ -1,11 +1,18 @@
 Mycogenomics Genome Assembly and Query Workflow
 ================================================
-> **Overview:** Workflow tool designed to detect and analyse genes of interest within small haplotype genomes. The workflow will compile haploid genomes, create a local database and query genes of interest. Where genes of interest are detected, a multiple alignment is performed for each target gene
+> **Overview:** Workflow tool designed to detect and analyse genes of interest within small haplotype genomes. The workflow will compile haploid genomes, create a local database and query genes of interest. Where genes of interest are detected, a multiple alignment is performed for each target gene and a map of samples with common alleles generated. 
 
 ## Specification
 - Input directory
 - Specified conda enviroments
-- 
+- Automated or semi-automated
+- What form of user interaction?
+    - command line
+    - command file 
+- What form of documentation? 
+- What form of setup?
+    - Done through github or through make file?
+    - Just add data
 
 
 ## Method
