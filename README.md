@@ -1,2 +1,29 @@
-# genome_assembly_mp1
-haploid short read genome assembly and query.
+Mycogenomics Genome Assembly and Query Workflow
+================================================
+> **Overview:** Workflow tool designed to detect and analyse genes of interest within small haplotype genomes. The workflow will compile haploid genomes, create a local database and query genes of interest. Where genes of interest are detected, a multiple alignment is performed for each target gene
+
+## Specification
+- Input directory
+- Specified conda enviroments
+- 
+
+
+## Method
+### Inputs
++ Genome sequences
++ Reference genome
++ Query gene sequences
+
+### Steps 
+1. Trim adaptors 
+1. Quality control
+1. Align to reference genome
+    1. Convert to binary 
+    1. Sort
+    1. Align
+1. Create local BLAST database
+1. Query each genome for genes
+1. Perform multiple alignment for each identified gene (MAFFT for adding in more alignments?)
+1. Generate a map of common alleles 
+
+## Motivation
