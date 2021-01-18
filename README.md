@@ -34,3 +34,9 @@ Mycogenomics Genome Assembly and Query Workflow
 1. Generate a map of common alleles 
 
 ## Motivation
+
+## Documentation
+
+## Tutorial
+
+
