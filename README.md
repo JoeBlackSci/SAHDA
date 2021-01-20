@@ -52,19 +52,19 @@ adaptor - barcodes - sequence - barcode - adaptor
 Some reads will slip through. This is the trimming step.
 
 ### Trimmomatic
-forwards
-reverse
+forwards  
+reverse  
 
 ### Spades
 Check latest version - bioconda up to date. 
 
 ### local BLAST databases 
-efficent for smaller databases
-no need to search against larger databases
-Indexed FASTA file
+efficent for smaller databases  
+no need to search against larger databases  
+Indexed FASTA file  
 
 ### Python script
-find bug
+find bug  
 re-write - into python 3
 
 
