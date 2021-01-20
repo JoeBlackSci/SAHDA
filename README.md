@@ -17,19 +17,25 @@ Mycogenomics Genome Assembly and Query Workflow
 
 ## Method
 ### Inputs
-+ Genome sequences
++ Raw fastq reads (2 or 4 files due to lane).
 + Reference genome
 + Query gene sequences
++ Adaptor sequence 
 
 ### Steps 
-1. Trim adaptors 
+1. Trim adaptors (trimmomatic) 
+    1. adaptors
+    2. low quality reads (linient trimming)
 1. Quality control
-1. Align to reference genome
-    1. Convert to binary 
-    1. Sort
-    1. Align
-1. Create local BLAST database
-1. Query each genome for genes
+1. Denovo assembly (spades)
+    1. Foulder for each assembly
+    1. Contigs (expect many contigs)
+    1. Rename contigs file
+1. Create local BLAST databases for each contigs (BLAST+)
+    1. Write all databases to a centralised foulder 
+1. Query each databse for sequence (BLAST+)
+1. Extract sequence from the database (python script)
+    1. Ensure correct orientiation 
 1. Perform multiple alignment for each identified gene (MAFFT for adding in more alignments?)
 1. Generate a map of common alleles 
 
@@ -38,5 +44,30 @@ Mycogenomics Genome Assembly and Query Workflow
 ## Documentation
 
 ## Tutorial
+
+## Notes
+### Sequences
+adaptor - barcodes - sequence - barcode - adaptor
+> should be trimmed by the machine
+Some reads will slip through. This is the trimming step.
+
+### Trimmomatic
+forwards
+reverse
+
+### Spades
+Check latest version - bioconda up to date. 
+
+### local BLAST databases 
+efficent for smaller databases
+no need to search against larger databases
+Indexed FASTA file
+
+### Python script
+find bug
+re-write - into python 3
+
+
+
 
 
