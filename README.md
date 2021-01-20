@@ -17,7 +17,7 @@ Mycogenomics Genome Assembly and Query Workflow
 
 ## Method
 ### Inputs
-+ Raw fastq reads (2 or 4 files due to lane).
++ Raw fastq reads (2 or 4 files due to lane)
 + Reference genome
 + Query gene sequences
 + Adaptor sequence 
