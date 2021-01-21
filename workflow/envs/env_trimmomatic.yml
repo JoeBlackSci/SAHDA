@@ -1,0 +1,6 @@
+name: env_trimmomatic
+channels:
+  - bioconda
+  - defaults
+dependencies:
+  - trimmomatic=0.39

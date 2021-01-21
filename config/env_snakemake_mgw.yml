@@ -1,0 +1,7 @@
+name: env_snakemake_mgw
+channels:
+  - defaults
+  - bioconda
+dependencies:
+  - snakemake=5.3.*
+  # Will need to alter to snakemake-minimal for windows integration

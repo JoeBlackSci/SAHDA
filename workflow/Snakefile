@@ -1,1 +1,47 @@
-# Workflow
+# Mycogenomics Genome Assembly and Query Workflow
+# Workflow to identify and compare target genes within small haplotype genomes.
+# J. Blackwell, M. McDonald
+
+###############################################################################
+# Initalisation
+###############################################################################
+
+# Set the working directory
+workdir: "../"
+
+# Set the workflow configuaration file
+configfile: "config/config.yml"
+
+
+###############################################################################
+# Target Rules
+###############################################################################
+
+###############################################################################
+# Workflow Rules
+###############################################################################
+
+rule trimmomatic_trim:
+    input:
+        R1="resources/{sample}_R1.fastq",
+        R2="resources/{sample}_R2.fastq",
+        adaptors="resources/adapters.fasta"
+    output:
+        "results/01_trim/{sample}_trimmed_1P.fastq",
+        "results/01_trim/{sample}_trimmed_1U.fastq",
+        "results/01_trim/{sample}_trimmed_2P.fastq",
+        "results/01_trim/{sample}_trimmed_2U.fastq"
+    params:
+        baseout="results/01_trim/{sample}_trimmed.fastq"
+    conda:
+        "envs/envs_trimmomatic.yml"
+    shell:
+        "trimmomatic PE " # Core command
+        "{input.R1} {input.R2} " # Inputs
+        "-baseout {params.baseout} " # Output flag
+        "ILLUMINACLIP:{input.adaptors}:2:30:10 " # Adaptor sequence and options
+        "LEADING:5 TRAILING:5 SLIDINGWINDOW:4:15 MINLEN:45 " # Options
+        # "2> {log}" # log output
+        
+    # log:
+    #     "logs/01_trim/{sample}.log"
