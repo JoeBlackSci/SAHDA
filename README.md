@@ -7,13 +7,13 @@ Mycogenomics Genome Assembly and Query Workflow
 
 <img align="left" width="200" src="ZPic.png" style="padding-right: 10px">
 
-|      Document |   |
-|--------------:|---|
-| Creation Date |   |
-|        Author |   |
-|       License |   |
+|       **Document:**|   |
+|-------------------:|:---|
+| **Creation Date:** |   |
+|        **Author:** | J. Blackwell, M. McDonald  |
+|       **License:** |   |
+|       **Contact:** | j.blackwell@warwick.ac.uk  |
 
-<br>
 <br>
 <br>
 <br>
