@@ -5,6 +5,13 @@ Mycogenomics Genome Assembly and Query Workflow
 [![Snakemake](https://img.shields.io/badge/snakemake-5.32.0-brightgreen.svg?style=flat)](https://snakemake.readthedocs.io)
 [![Snakemake](https://img.shields.io/badge/Conda-4.9.2-brightgreen.svg?style=flat)](https://docs.conda.io/projects/conda/en/latest/index.html)
 
+<img align="left" width="200" src="ZPic.png" style="padding-right: 10px">
+
+|      Document |   |
+|--------------:|---|
+| Creation Date |   |
+|        Author |   |
+|       License |   |
 > **Overview:** Workflow tool designed to detect and analyse genes of interest within small haplotype genomes. The workflow will compile haploid genomes, create a local database and query genes of interest. Where genes of interest are detected, a multiple alignment is performed for each target gene and a map of samples with common alleles generated.
 
 ## Specification
