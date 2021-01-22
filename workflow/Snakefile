@@ -1,21 +1,31 @@
 # Mycogenomics Genome Assembly and Query Workflow
 # Workflow to identify and compare target genes within small haplotype genomes.
-# J. Blackwell, M. McDonald
+# J. Blackwell, M. McDonald.
+# University of Birmingham
 
 ###############################################################################
 # Initalisation
 ###############################################################################
 
 # Set the working directory
-workdir: "../"
+# currently not needed, run snakemake from top level foulder
+# workdir: "/Users/u1604749/Documents/Mini_project_1/genome_assembly_mp1"
 
 # Set the workflow configuaration file
-configfile: "config/config.yml"
+# configfile: "config/config.yml"
+
+# Setting variables
+samples = ["SRR957824_500K"]
+# Samples will be defined automatically at a later date
 
 
 ###############################################################################
 # Target Rules
 ###############################################################################
+rule target:
+    input:
+        # expand("results/01_trim/{sample}_trimmed_1P.fastq", sample=samples)
+        expand("results/02_assemble/{sample}_assembled/", sample=samples)
 
 ###############################################################################
 # Workflow Rules
@@ -34,7 +44,7 @@ rule trimmomatic_trim:
     params:
         baseout="results/01_trim/{sample}_trimmed.fastq"
     conda:
-        "envs/envs_trimmomatic.yml"
+        "envs/env_trimmomatic.yml"
     shell:
         "trimmomatic PE " # Core command
         "{input.R1} {input.R2} " # Inputs
@@ -42,6 +52,27 @@ rule trimmomatic_trim:
         "ILLUMINACLIP:{input.adaptors}:2:30:10 " # Adaptor sequence and options
         "LEADING:5 TRAILING:5 SLIDINGWINDOW:4:15 MINLEN:45 " # Options
         # "2> {log}" # log output
-        
+
     # log:
     #     "logs/01_trim/{sample}.log"
+
+# provide in order of input size?
+# any extra parametres to include?
+# need to append the unpaired reads?
+rule spades_assembly:
+    input:
+        PE1="results/01_trim/{sample}_trimmed_1P.fastq",
+        PE2="results/01_trim/{sample}_trimmed_2P.fastq",
+        S3="results/01_trim/{sample}_trimmed_1U.fastq",
+        # S4="results/01_trim/{sample}_trimmed_2U.fastq"
+    output:
+        directory("results/02_assemble/{sample}_assembled/")
+    conda:
+        # not latest version but no major changes that impact the workflow
+        "envs/env_spades.yml"
+    shell:
+        "spades.py " # Core command
+        "--pe1-1 {input.PE1} --pe1-2 {input.PE2} " # Paired foward and reverse library
+        "--pe1-s {input.S3} "
+        # "--pe1-s {input.S4} " # Unpaired forward and reverse library
+        "-o {output}" # output directory

@@ -1,0 +1,6 @@
+name: env_spades
+channels:
+  - bioconda
+  - defaults
+dependencies:
+  - spades=3.14.0
