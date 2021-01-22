@@ -1,7 +1,7 @@
 Mycogenomics Genome Assembly and Query Workflow
 ================================================
 
-![Version](https://img.shields.io/badge/Version-0.2.0-red)
+[![Version](https://img.shields.io/badge/Version-0.2.0-red)](https://github.com/JoeBlackSci/genome_assembly_mp1)
 [![Snakemake](https://img.shields.io/badge/snakemake-5.32.0-brightgreen.svg?style=flat)](https://snakemake.readthedocs.io)
 [![Snakemake](https://img.shields.io/badge/Conda-4.9.2-brightgreen.svg?style=flat)](https://docs.conda.io/projects/conda/en/latest/index.html)
 
@@ -28,11 +28,11 @@ Mycogenomics Genome Assembly and Query Workflow
 + Adaptor sequence
 
 ### Steps
-1. Trim adaptors (trimmomatic)
+1. Trim adaptors \[[trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic)\]
     1. adaptors
     2. low quality reads (linient trimming)
 1. Quality control
-1. Denovo assembly (spades)
+1. Denovo assembly \[[SPAdes](https://cab.spbu.ru/software/spades/)\]
     1. Foulder for each assembly
     1. Contigs (expect many contigs)
     1. Rename contigs file
@@ -59,7 +59,7 @@ Follow the [miniconda3 installation instructions](https://conda.io/projects/cond
 
 - Answer **YES** when asked if conda should be put into and manage your **PATH**
 
->  The lastest version of conda should work fine but if any issues are encountered this workflow was created using conda version 4.9.2.
+>  The lastest version of conda should work fine but if any issues are encountered this workflow was created using conda version 4.9.2. Conda can manage it's own version.
 
 
 #### Mamba

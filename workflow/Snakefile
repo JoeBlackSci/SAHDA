@@ -7,15 +7,15 @@
 # Initalisation
 ###############################################################################
 
-# Set the working directory
-# currently not needed, run snakemake from top level foulder
-# workdir: "/Users/u1604749/Documents/Mini_project_1/genome_assembly_mp1"
-
 # Set the workflow configuaration file
 # configfile: "config/config.yml"
 
 # Setting variables
+## Global variables
 samples = ["SRR957824_500K"]
+
+## Trimmomatic
+TRIMMOMATIC_OPTIONS = ["LEADING:5 TRAILING:5 SLIDINGWINDOW:4:15 MINLEN:45"]
 # Samples will be defined automatically at a later date
 
 
@@ -31,6 +31,7 @@ rule target:
 # Workflow Rules
 ###############################################################################
 
+# Requires Java permission (important for clusters?)
 rule trimmomatic_trim:
     input:
         R1="resources/{sample}_R1.fastq",
@@ -42,37 +43,41 @@ rule trimmomatic_trim:
         "results/01_trim/{sample}_trimmed_2P.fastq",
         "results/01_trim/{sample}_trimmed_2U.fastq"
     params:
-        baseout="results/01_trim/{sample}_trimmed.fastq"
+        baseout="results/01_trim/{sample}_trimmed.fastq",
+        adapt_op=":2:30:10",
+        trim_op=TRIMMOMATIC_OPTIONS
+        # Can add in options here from a lsit specified in config.
     conda:
         "envs/env_trimmomatic.yml"
+    log:
+        "logs/01_trim/{sample}.log"
     shell:
         "trimmomatic PE " # Core command
         "{input.R1} {input.R2} " # Inputs
         "-baseout {params.baseout} " # Output flag
-        "ILLUMINACLIP:{input.adaptors}:2:30:10 " # Adaptor sequence and options
-        "LEADING:5 TRAILING:5 SLIDINGWINDOW:4:15 MINLEN:45 " # Options
-        # "2> {log}" # log output
-
-    # log:
-    #     "logs/01_trim/{sample}.log"
+        "ILLUMINACLIP:{input.adaptors}{params.adapt_op} " # Adaptor sequence and options
+        "{params.trim_op} " # Options
+        "2> {log}" # log output
 
 # provide in order of input size?
 # any extra parametres to include?
 # need to append the unpaired reads?
 rule spades_assembly:
     input:
-        PE1="results/01_trim/{sample}_trimmed_1P.fastq",
-        PE2="results/01_trim/{sample}_trimmed_2P.fastq",
-        S3="results/01_trim/{sample}_trimmed_1U.fastq",
-        # S4="results/01_trim/{sample}_trimmed_2U.fastq"
+        P1="results/01_trim/{sample}_trimmed_1P.fastq",
+        P2="results/01_trim/{sample}_trimmed_2P.fastq",
+        U1="results/01_trim/{sample}_trimmed_1U.fastq",
+        U2="results/01_trim/{sample}_trimmed_2U.fastq"
     output:
         directory("results/02_assemble/{sample}_assembled/")
     conda:
         # not latest version but no major changes that impact the workflow
         "envs/env_spades.yml"
+    log:
+        "logs/02_assemble/{sample}.log"
     shell:
         "spades.py " # Core command
-        "--pe1-1 {input.PE1} --pe1-2 {input.PE2} " # Paired foward and reverse library
-        "--pe1-s {input.S3} "
-        # "--pe1-s {input.S4} " # Unpaired forward and reverse library
-        "-o {output}" # output directory
+        "--pe1-1 {input.P1} --pe1-2 {input.P2} " # Paired foward and reverse reads
+        "--pe1-s {input.U1} --pe1-s {input.U2} " # Unpaired forward and reverse reads
+        "-o {output} " # output directory
+        "2> {log}" # log
