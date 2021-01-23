@@ -1,0 +1,6 @@
+name: env_blast_plus
+channels:
+  - bioconda
+  - defaults
+dependencies:
+  - blast=2.6.0

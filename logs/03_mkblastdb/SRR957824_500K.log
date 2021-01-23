@@ -1,0 +1,9 @@
+
+
+Building a new DB, current time: 01/23/2021 12:57:33
+New DB name:   /Users/u1604749/Documents/Mini_project_1/genome_assembly_mp1/results/03_blastdb/SRR957824_500K_blastdb/SRR957824_500K_assembly
+New DB title:  results/02_assemble/SRR957824_500K_assembled/contigs.fasta
+Sequence type: Nucleotide
+Keep MBits: T
+Maximum file size: 1000000000B
+Adding sequences from FASTA; added 578 sequences in 0.0584641 seconds.

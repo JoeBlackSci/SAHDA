@@ -7,7 +7,7 @@
 # Initalisation
 ###############################################################################
 
-# Set the workflow configuaration file
+# Set the workflow configuaration file (not currently in use)
 # configfile: "config/config.yml"
 
 # Setting variables
@@ -25,7 +25,8 @@ TRIMMOMATIC_OPTIONS = ["LEADING:5 TRAILING:5 SLIDINGWINDOW:4:15 MINLEN:45"]
 rule target:
     input:
         # expand("results/01_trim/{sample}_trimmed_1P.fastq", sample=samples)
-        expand("results/02_assemble/{sample}_assembled/", sample=samples)
+        # expand("results/02_assemble/{sample}_assembled/contigs.fasta", sample=samples),
+        expand("results/03_blastdb/{sample}_blastdb/{sample}_assembly.fasta", sample=samples),
 
 ###############################################################################
 # Workflow Rules
@@ -81,3 +82,31 @@ rule spades_assembly:
         "--pe1-s {input.U1} --pe1-s {input.U2} " # Unpaired forward and reverse reads
         "-o {output} " # output directory
         "2> {log}" # log
+
+# rename each contig to have a unique identifier for retreval?
+# or is it enough that each will be in its own db?
+# Maybe best practice to split this into two steps:
+# 1. move fasta file
+# 2. index with makedb
+rule blast_mkblastdb:
+    input:
+        "results/02_assemble/{sample}_assembled/contigs.fasta"
+    output:
+        dbdir=directory("results/03_blastdb/{sample}_blastdb/"),
+        assembly="results/03_blastdb/{sample}_blastdb/{sample}_assembly.fasta"
+    params:
+        "results/03_blastdb/{sample}_blastdb/{sample}_assembly"
+    conda:
+        "envs/env_blast_plus.yml"
+    log:
+        makedb="logs/03_mkblastdb/{sample}_makedb.log",
+        cpfasta="logs/03_mkblastdb/{sample}_cpfasta.log"
+    shell:
+        "makeblastdb " # Core command
+        "-in {input} " # Input files
+        "-dbtype nucl " # Database Options
+        "-out {params} " # output directory
+        "-logfile {log.makedb} " # log
+        "; " # next shell command
+        "cp {input} {output.assembly} " # copy fasta assembly
+        "2> {log.cpfasta}" # log
