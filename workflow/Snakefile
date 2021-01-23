@@ -13,6 +13,7 @@
 # Setting variables
 ## Global variables
 samples = ["SRR957824_500K"]
+queries = ["testquery"]
 
 ## Trimmomatic
 TRIMMOMATIC_OPTIONS = ["LEADING:5 TRAILING:5 SLIDINGWINDOW:4:15 MINLEN:45"]
@@ -26,7 +27,8 @@ rule target:
     input:
         # expand("results/01_trim/{sample}_trimmed_1P.fastq", sample=samples)
         # expand("results/02_assemble/{sample}_assembled/contigs.fasta", sample=samples),
-        expand("results/03_blastdb/{sample}_blastdb/{sample}_assembly.fasta", sample=samples),
+        # expand("results/03_blastdb/{sample}_blastdb/{sample}_assembly.fasta", sample=samples),
+        expand("results/04_search/{query}/{query}_{sample}.txt", query=queries, sample=samples)
 
 ###############################################################################
 # Workflow Rules
@@ -88,6 +90,7 @@ rule spades_assembly:
 # Maybe best practice to split this into two steps:
 # 1. move fasta file
 # 2. index with makedb
+# Directory here. could be replaced with pram to define folder and have output as a specified file
 rule blast_mkblastdb:
     input:
         "results/02_assemble/{sample}_assembled/contigs.fasta"
@@ -110,3 +113,24 @@ rule blast_mkblastdb:
         "; " # next shell command
         "cp {input} {output.assembly} " # copy fasta assembly
         "2> {log.cpfasta}" # log
+
+# Currently working for just a lingle query
+# More work needed for scalbility here
+rule blast_search:
+    input:
+        query="resources/query/{query}.fasta",
+        blastdb=directory("results/03_blastdb/{sample}_blastdb/")
+    output:
+        "results/04_search/{query}/{query}_{sample}.txt"
+    params:
+        "results/03_blastdb/{sample}_blastdb/{sample}_assembly"
+    conda:
+        "envs/env_blast_plus.yml"
+    log:
+        "logs/04_search/{query}_{sample}_search.log"
+    shell:
+        "blastn " # Core command
+        "-db {params} " # Database
+        "-query {input.query} " # query
+        "-out {output} " # output file
+        "2> {log}" # log

@@ -32,8 +32,8 @@ Mycogenomics Genome Assembly and Query Workflow
 1. ? Quality control
 1. Denovo assembly \[[SPAdes](https://cab.spbu.ru/software/spades/)\]
 1. Create local BLAST databases for each contigs \[[BLAST+](https://www.ncbi.nlm.nih.gov/books/NBK279690/)\]
-    1. Write all databases to a centralised folder
-1. Query each databse for sequence (BLAST+)
+    1. ? Write all databases to a centralised folder
+1. Query each databse for sequence \[[BLAST+](https://www.ncbi.nlm.nih.gov/books/NBK279690/)\]
 1. Extract sequence from the database (python script)
     1. Ensure correct orientiation
 1. Perform multiple alignment for each identified gene (MAFFT for adding in more alignments?)
@@ -43,7 +43,7 @@ Mycogenomics Genome Assembly and Query Workflow
 ## Tutorial
 
 ### Required software
-> This workflow requires the installation of miniconda3, mamba and snakemake.
+> This workflow requires the installation of miniconda3 and snakemake. It is recommended that mamba is also installed.
 
 These are the methods, as recommended by the [snakemake documentation](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html) for installing the software required for this workflow.
 
@@ -86,7 +86,7 @@ conda activate env_snakemake_mgw
 ### Input data
 
 #### Paired end reads
-This workflow will accept paired-end short read sequences of the following formats.
+This workflow will accept paired-end short read sequences with filenames of the following formats.
 ```
 <sample_name>_<total_sequences>_<R1/R2>.fastq.gz
 <sample_name>_<total_sequences>_<R1/R2>.fastq
