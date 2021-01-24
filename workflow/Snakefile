@@ -4,7 +4,7 @@
 # University of Birmingham
 
 ###############################################################################
-# Initalisation
+######### Initalisation #########
 ###############################################################################
 
 # Set the workflow configuaration file (not currently in use)
@@ -21,7 +21,7 @@ TRIMMOMATIC_OPTIONS = ["LEADING:5 TRAILING:5 SLIDINGWINDOW:4:15 MINLEN:45"]
 
 
 ###############################################################################
-# Target Rules
+######### Target Rules #########
 ###############################################################################
 rule target:
     input:
@@ -31,7 +31,7 @@ rule target:
         expand("results/04_search/{query}/{query}_{sample}.txt", query=queries, sample=samples)
 
 ###############################################################################
-# Workflow Rules
+######### Workflow Rules #########
 ###############################################################################
 
 # Requires Java permission (important for clusters?)
@@ -149,7 +149,7 @@ rule blasttogff:
     conda:
         "envs/env_biopython.yml"
     log:
-        "logs/05_retrieve/{sample}_retrieve.log"
+        "logs/05_retrieve/{query}_{sample}_retrieve.log"
     shell:
         "BLASTtoGFF.py " # Core command
         "-i {input.inFasta} " # Query fasta
