@@ -1,0 +1,7 @@
+name: env_biopython
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - bioconda=1.78
+  - python=3.8.5

@@ -1,7 +1,7 @@
 Mycogenomics Genome Assembly and Query Workflow
 ================================================
 
-[![Version](https://img.shields.io/badge/Version-0.3.0-red)](https://github.com/JoeBlackSci/genome_assembly_mp1)
+[![Version](https://img.shields.io/badge/Version-0.4.0-red)](https://github.com/JoeBlackSci/genome_assembly_mp1)
 [![Snakemake](https://img.shields.io/badge/snakemake-5.32.0-brightgreen.svg?style=flat)](https://snakemake.readthedocs.io)
 [![Snakemake](https://img.shields.io/badge/Conda-4.9.2-brightgreen.svg?style=flat)](https://docs.conda.io/projects/conda/en/latest/index.html)
 
@@ -114,26 +114,3 @@ target gene databse
 ## Motivation
 
 ## Documentation
-
-
-## Notes
-### Sequences
-adaptor - barcodes - sequence - barcode - adaptor
-> should be trimmed by the machine
-Some reads will slip through. This is the trimming step.
-
-### Trimmomatic
-forwards  
-reverse  
-
-### Spades
-Check latest version - bioconda up to date.
-
-### local BLAST databases
-efficent for smaller databases  
-no need to search against larger databases  
-Indexed FASTA file  
-
-### Python script
-find bug  
-re-write - into python 3

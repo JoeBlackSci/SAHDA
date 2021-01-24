@@ -102,8 +102,8 @@ rule blast_mkblastdb:
     conda:
         "envs/env_blast_plus.yml"
     log:
-        makedb="logs/03_mkblastdb/{sample}_makedb.log",
-        cpfasta="logs/03_mkblastdb/{sample}_cpfasta.log"
+        makedb="logs/03_blastdb/{sample}_makedb.log",
+        cpfasta="logs/03_blastdb/{sample}_cpfasta.log"
     shell:
         "makeblastdb " # Core command
         "-in {input} " # Input files
@@ -116,6 +116,7 @@ rule blast_mkblastdb:
 
 # Currently working for just a lingle query
 # More work needed for scalbility here
+# Output should be csv?
 rule blast_search:
     input:
         query="resources/query/{query}.fasta",
@@ -134,3 +135,29 @@ rule blast_search:
         "-query {input.query} " # query
         "-out {output} " # output file
         "2> {log}" # log
+
+rule blasttogff:
+    input:
+        inFasta="resources/query/{query}.fasta",
+        refFasta="results/03_blastdb/{sample}_blastdb/{sample}_assembly.fasta",
+        inBlast="results/04_search/{query}/{query}_{sample}.txt"
+    output:
+        outGff="results/05_retrieve/{query}_{sample}_retrieved.gff",
+        outFasta="results/05_retrieve/{query}_{sample}_retrieved.fasta"
+    params:
+        centCover="50"
+    conda:
+        "envs/env_biopython.yml"
+    log:
+        "logs/05_retrieve/{sample}_retrieve.log"
+    shell:
+        "BLASTtoGFF.py " # Core command
+        "-i {input.inFasta} " # Query fasta
+        "-r {input.refFasta} " # Denovo assembly
+        "-b {input.inBlast} " # Blast search result
+        "-g {output.outGff} " # gff output
+        "-o {output.outFasta} " # retreived sequence
+        "-p {params.centCover} " # minimum percent result coverage
+        "2> {log}" # log
+
+# rule multiple_alignment:
