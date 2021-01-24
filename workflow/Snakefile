@@ -4,7 +4,7 @@
 # University of Birmingham
 
 ###############################################################################
-######### Initalisation #########
+### Initalisation ###
 ###############################################################################
 
 # Set the workflow configuaration file (not currently in use)
@@ -12,16 +12,24 @@
 
 # Setting variables
 ## Global variables
-samples = ["SRR957824_500K"]
+
+### Set samples
+# Each set of samples in their own folder with a fasta adapter file
+# if config["samples"]:
+#     samples = config["samples"]
+# else:
+#     from os import listdir
+
+samples = ["SRR3740251", "WAI1848_L001"]
 queries = ["testquery"]
 
-## Trimmomatic
+## Trimmomatic parametres
 TRIMMOMATIC_OPTIONS = ["LEADING:5 TRAILING:5 SLIDINGWINDOW:4:15 MINLEN:45"]
-# Samples will be defined automatically at a later date
+
 
 
 ###############################################################################
-######### Target Rules #########
+### Target Rules ###
 ###############################################################################
 rule target:
     input:
@@ -31,15 +39,15 @@ rule target:
         expand("results/04_search/{query}/{query}_{sample}.txt", query=queries, sample=samples)
 
 ###############################################################################
-######### Workflow Rules #########
+### Workflow Rules ###
 ###############################################################################
 
 # Requires Java permission (important for clusters?)
 rule trimmomatic_trim:
     input:
-        R1="resources/{sample}_R1.fastq",
-        R2="resources/{sample}_R2.fastq",
-        adaptors="resources/adapters.fasta"
+        R1="resources/{sample}_R1.fastq.gz",
+        R2="resources/{sample}_R2.fastq.gz",
+        adapters="resources/adapters.fasta"
     output:
         "results/01_trim/{sample}_trimmed_1P.fastq",
         "results/01_trim/{sample}_trimmed_1U.fastq",
@@ -58,7 +66,7 @@ rule trimmomatic_trim:
         "trimmomatic PE " # Core command
         "{input.R1} {input.R2} " # Inputs
         "-baseout {params.baseout} " # Output flag
-        "ILLUMINACLIP:{input.adaptors}{params.adapt_op} " # Adaptor sequence and options
+        "ILLUMINACLIP:{input.adapters}{params.adapt_op} " # adapter sequence and options
         "{params.trim_op} " # Options
         "2> {log}" # log output
 
@@ -72,7 +80,9 @@ rule spades_assembly:
         U1="results/01_trim/{sample}_trimmed_1U.fastq",
         U2="results/01_trim/{sample}_trimmed_2U.fastq"
     output:
-        directory("results/02_assemble/{sample}_assembled/")
+        "results/02_assemble/{sample}_assembled/contigs.fasta"
+    params:
+        "results/02_assemble/{sample}_assembled/"
     conda:
         # not latest version but no major changes that impact the workflow
         "envs/env_spades.yml"
@@ -82,7 +92,7 @@ rule spades_assembly:
         "spades.py " # Core command
         "--pe1-1 {input.P1} --pe1-2 {input.P2} " # Paired foward and reverse reads
         "--pe1-s {input.U1} --pe1-s {input.U2} " # Unpaired forward and reverse reads
-        "-o {output} " # output directory
+        "-o {params} " # output directory
         "2> {log}" # log
 
 # rename each contig to have a unique identifier for retreval?
@@ -120,7 +130,7 @@ rule blast_mkblastdb:
 rule blast_search:
     input:
         query="resources/query/{query}.fasta",
-        blastdb=directory("results/03_blastdb/{sample}_blastdb/")
+        blastdb="results/03_blastdb/{sample}_blastdb/"
     output:
         "results/04_search/{query}/{query}_{sample}.txt"
     params:
