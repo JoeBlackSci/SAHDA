@@ -134,15 +134,17 @@ rule blast_search:
     output:
         "results/04_search/{query}/{query}_{sample}.txt"
     params:
-        "results/03_blastdb/{sample}_blastdb/{sample}_assembly"
+        blastdb="results/03_blastdb/{sample}_blastdb/{sample}_assembly"
+        format="7 qseqid qlen sseqid sstart send qstart qend evalue bitscore length pident"
     conda:
         "envs/env_blast_plus.yml"
     log:
         "logs/04_search/{query}_{sample}_search.log"
     shell:
         "blastn " # Core command
-        "-db {params} " # Database
+        "-db {params.blastdb} " # Database
         "-query {input.query} " # query
+        "-outfmt {params.format} " # format
         "-out {output} " # output file
         "2> {log}" # log
 
