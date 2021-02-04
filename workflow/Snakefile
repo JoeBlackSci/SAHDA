@@ -20,11 +20,12 @@
 # else:
 #     from os import listdir
 
-samples = ["SRR3740251", "WAI1848_L001"]
-queries = ["testquery"]
+samples = ["SRR3740251", "SRR3740249", "SRR3740250"]
+queries = ["CYP-51", "Mycgr3T94552"]
 
 ## Trimmomatic parametres
 TRIMMOMATIC_OPTIONS = ["LEADING:5 TRAILING:5 SLIDINGWINDOW:4:15 MINLEN:45"]
+
 
 
 
@@ -36,7 +37,9 @@ rule target:
         # expand("results/01_trim/{sample}_trimmed_1P.fastq", sample=samples)
         # expand("results/02_assemble/{sample}_assembled/contigs.fasta", sample=samples),
         # expand("results/03_blastdb/{sample}_blastdb/{sample}_assembly.fasta", sample=samples),
-        expand("results/04_search/{query}/{query}_{sample}.txt", query=queries, sample=samples)
+        # expand("results/04_search/{query}/{query}_{sample}.txt", query=queries, sample=samples)
+        # expand("results/05_retrieve/{query}/{query}_{sample}_retrieved.fasta", query=queries, sample=samples)
+        expand("results/07_align/{query}_aligned.fasta", query=queries)
 
 ###############################################################################
 ### Workflow Rules ###
@@ -45,9 +48,9 @@ rule target:
 # Requires Java permission (important for clusters?)
 rule trimmomatic_trim:
     input:
-        R1="resources/{sample}_R1.fastq.gz",
-        R2="resources/{sample}_R2.fastq.gz",
-        adapters="resources/adapters.fasta"
+        R1="resources/reads/{sample}_R1.fastq.gz",
+        R2="resources/reads/{sample}_R2.fastq.gz",
+        adapters="resources/adapters/NexteraPE-PE.fa"
     output:
         "results/01_trim/{sample}_trimmed_1P.fastq",
         "results/01_trim/{sample}_trimmed_1U.fastq",
@@ -134,8 +137,8 @@ rule blast_search:
     output:
         "results/04_search/{query}/{query}_{sample}.txt"
     params:
-        blastdb="results/03_blastdb/{sample}_blastdb/{sample}_assembly"
-        format="7 qseqid qlen sseqid sstart send qstart qend evalue bitscore length pident"
+        blastdb="results/03_blastdb/{sample}_blastdb/{sample}_assembly",
+        format="\"6 qseqid qlen sseqid sstart send qstart qend evalue bitscore length pident \""
     conda:
         "envs/env_blast_plus.yml"
     log:
@@ -154,8 +157,8 @@ rule blasttogff:
         refFasta="results/03_blastdb/{sample}_blastdb/{sample}_assembly.fasta",
         inBlast="results/04_search/{query}/{query}_{sample}.txt"
     output:
-        outGff="results/05_retrieve/{query}_{sample}_retrieved.gff",
-        outFasta="results/05_retrieve/{query}_{sample}_retrieved.fasta"
+        outGff="results/05_retrieve/{query}/{query}_{sample}_retrieved.gff",
+        outFasta="results/05_retrieve/{query}/{query}_{sample}_retrieved.fasta"
     params:
         centCover="50"
     conda:
@@ -163,7 +166,7 @@ rule blasttogff:
     log:
         "logs/05_retrieve/{query}_{sample}_retrieve.log"
     shell:
-        "BLASTtoGFF.py " # Core command
+        "workflow/scripts/BLASTtoGFF.py " # Core command
         "-i {input.inFasta} " # Query fasta
         "-r {input.refFasta} " # Denovo assembly
         "-b {input.inBlast} " # Blast search result
@@ -173,3 +176,37 @@ rule blasttogff:
         "2> {log}" # log
 
 # rule multiple_alignment:
+# Comparison: doi: 10.1186/1748-7188-9-4
+# Chose MAFFT for reasons of accurary, recently increased speed and documentation
+# Got to think about inputs
+
+# Is rule correct? input might be werid
+
+rule mafft_append:
+    input:
+        expand("results/05_retrieve/{query}/{query}_{sample}_retrieved.fasta", query=queries, sample=samples)
+    output:
+        "results/06_align/{query}/all.fasta"
+    log:
+        "logs/06_align/{query}_align.log"
+    params:
+        "results/05_retrieve/{query}/"
+    shell:
+        "cat {params}*_retrieved.fasta > {output}"
+
+rule mafft_align:
+    input:
+        "results/06_align/{query}/all.fasta"
+    output:
+        "results/07_align/{query}_aligned.fasta"
+    log:
+        "logs/07_align/{query}_align.log"
+    conda:
+        "envs/env_mafft.yml"
+    shell:
+        "mafft {input} > {output} 2> {log}"
+
+
+
+
+# https://snakemake.readthedocs.io/en/stable/project_info/faq.html#how-do-i-run-my-rule-on-all-files-of-a-certain-directory
