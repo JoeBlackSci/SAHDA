@@ -3,9 +3,9 @@
 # J. Blackwell, M. McDonald.
 # University of Birmingham
 
-###############################################################################
+#####################
 ### Initalisation ###
-###############################################################################
+#####################
 
 # Set the workflow configuaration file (not currently in use)
 # configfile: "config/config.yml"
@@ -29,9 +29,9 @@ TRIMMOMATIC_OPTIONS = ["LEADING:5 TRAILING:5 SLIDINGWINDOW:4:15 MINLEN:45"]
 
 
 
-###############################################################################
+####################
 ### Target Rules ###
-###############################################################################
+####################
 rule target:
     input:
         # expand("results/01_trim/{sample}_trimmed_1P.fastq", sample=samples)
@@ -41,9 +41,9 @@ rule target:
         # expand("results/05_retrieve/{query}/{query}_{sample}_retrieved.fasta", query=queries, sample=samples)
         expand("results/07_align/{query}_aligned.fasta", query=queries)
 
-###############################################################################
+######################
 ### Workflow Rules ###
-###############################################################################
+######################
 
 # Requires Java permission (important for clusters?)
 rule trimmomatic_trim:
@@ -127,9 +127,8 @@ rule blast_mkblastdb:
         "cp {input} {output.assembly} " # copy fasta assembly
         "2> {log.cpfasta}" # log
 
-# Currently working for just a lingle query
-# More work needed for scalbility here
-# Output should be csv?
+# Currently working for just a single query
+# What if there is no results?
 rule blast_search:
     input:
         query="resources/query/{query}.fasta",
@@ -182,21 +181,21 @@ rule blasttogff:
 
 # Is rule correct? input might be werid
 
-rule mafft_append:
+rule target_condense:
     input:
-        expand("results/05_retrieve/{query}/{query}_{sample}_retrieved.fasta", query=queries, sample=samples)
+        "results/05_retrieve/{query}"
     output:
-        "results/06_align/{query}/all.fasta"
+        "results/06_combine/{query}_all.fasta"
     log:
-        "logs/06_align/{query}_align.log"
-    params:
-        "results/05_retrieve/{query}/"
+        "logs/06_combine/{query}_align.log"
     shell:
-        "cat {params}*_retrieved.fasta > {output}"
+        "cat {input}/*_retrieved.fasta > {output}"
+
+
 
 rule mafft_align:
     input:
-        "results/06_align/{query}/all.fasta"
+        "results/06_combine/{query}_all.fasta"
     output:
         "results/07_align/{query}_aligned.fasta"
     log:
