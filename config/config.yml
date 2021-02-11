@@ -1,3 +1,8 @@
+########################
+### Workflow Options ###
+########################
+
+## List of paired end samples for assembly.
 Samples:
   - SRR3740251
   - SRR3740249
@@ -5,6 +10,23 @@ Samples:
   - WAI1848
   - WAI1849
 
+# List of query genes
 Queries:
   - CYP-51
   - Mycgr3T94552
+
+###########################
+### Trimmomatic Options ###
+###########################
+
+# full name of adapter file
+Adapter_file:
+  - NexteraPE-PE.fa
+
+# Chosen adapter options
+Adapter_options:
+  - :2:30:10
+
+# Trimmomatic options
+Trimmomatic_options:
+  - LEADING:5 TRAILING:5 SLIDINGWINDOW:4:15 MINLEN:45

@@ -8,18 +8,22 @@
 #####################
 
 # Set the workflow configuaration file
-configfile: "config/config.yaml"
+configfile: "config/config.yml"
 
-# Setting variables
+# Setting workflow settings
 samples = config["Samples"]
 queries = config["Queries"]
+
+# Trimmomatic settings
+adapters = config["Adapter_file"]
+ADAPTER_OPTIONS = config["Adapter_options"]
+TRIMMOMATIC_OPTIONS = config["Trimmomatic_options"]
 
 # Check lists
 print(samples)
 print(queries)
-
-## Trimmomatic parametres
-TRIMMOMATIC_OPTIONS = ["LEADING:5 TRAILING:5 SLIDINGWINDOW:4:15 MINLEN:45"]
+print(adapters)
+print(TRIMMOMATIC_OPTIONS)
 
 ####################
 ### Target Rules ###
@@ -75,7 +79,7 @@ rule trimmomatic_trim:
     input:
         R1="resources/reads/{sample}_R1.fastq.gz",
         R2="resources/reads/{sample}_R2.fastq.gz",
-        adapters="resources/adapters/NexteraPE-PE.fa"
+        adapters=expand("resources/adapters/{adapter}", adapter=adapters)
     output:
         "results/01_trim/{sample}_trimmed_1P.fastq",
         "results/01_trim/{sample}_trimmed_1U.fastq",
@@ -83,9 +87,8 @@ rule trimmomatic_trim:
         "results/01_trim/{sample}_trimmed_2U.fastq"
     params:
         baseout="results/01_trim/{sample}_trimmed.fastq",
-        adapt_op=":2:30:10",
+        adapt_op=ADAPTER_OPTIONS,
         trim_op=TRIMMOMATIC_OPTIONS
-        # Can add in options here from a lsit specified in config.
     conda:
         "envs/env_trimmomatic.yml"
     log:
@@ -102,7 +105,7 @@ rule trimmomatic_trim_alt:
     input:
         R1="resources/00_append/{sample}_R1.fastq.gz",
         R2="resources/00_append/{sample}_R2.fastq.gz",
-        adapters="resources/adapters/NexteraPE-PE.fa"
+        adapters=expand("resources/adapters/{adapter}", adapter=adapters)
     output:
         "results/01_trim/{sample}_trimmed_1P.fastq",
         "results/01_trim/{sample}_trimmed_1U.fastq",
@@ -110,9 +113,8 @@ rule trimmomatic_trim_alt:
         "results/01_trim/{sample}_trimmed_2U.fastq"
     params:
         baseout="results/01_trim/{sample}_trimmed.fastq",
-        adapt_op=":2:30:10",
+        adapt_op=ADAPTER_OPTIONS,
         trim_op=TRIMMOMATIC_OPTIONS
-        # Can add in options here from a lsit specified in config.
     conda:
         "envs/env_trimmomatic.yml"
     log:
