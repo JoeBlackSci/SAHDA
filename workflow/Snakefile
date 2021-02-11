@@ -36,7 +36,7 @@ rule target_assemble:
     input:
         expand("results/02_assemble/{sample}_assembled/contigs.fasta", sample=samples)
 
-rule target_blast:
+rule target_blastdb:
     input:
         expand("results/03_blastdb/{sample}_blastdb/{sample}_assembly.fasta", sample=samples)
 

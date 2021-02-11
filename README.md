@@ -132,8 +132,21 @@ Snakemake will automatically determine which jobs need to be run to generate all
 
 
 #### Specifying Target Files
+To specify a specific set of output files, follow the snakemake command with a target rule to specify what steps to perform. For example:
 
+```
+snakemake --cores all --use-conda target_trim
+```
 
+The following is the list of target rules:
+```
+target_trim       # Trim fastq files
+target_assemble   # Assemble denovo genome
+target_blastdb    # Create local blast database
+target_search     # Search local database for gene query
+target_retreive   # Retrieve identified hit sequences
+target_align      # Align retrieved sequences
+```
 
 #### Parameters
 For a full list of snakemake parameters see the [snakemake documentation](https://snakemake.readthedocs.io/en/stable/executing/cli.html).
