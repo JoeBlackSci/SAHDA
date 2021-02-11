@@ -20,14 +20,18 @@ ADAPTER_OPTIONS = config["Adapter_options"]
 TRIMMOMATIC_OPTIONS = config["Trimmomatic_options"]
 
 # Check lists
-print(samples)
-print(queries)
-print(adapters)
-print(TRIMMOMATIC_OPTIONS)
+# print(samples)
+# print(queries)
+# print(adapters)
+# print(TRIMMOMATIC_OPTIONS)
 
 ####################
 ### Target Rules ###
 ####################
+rule target_default:
+    input:
+        expand("results/07_align/{query}_aligned.fasta", query=queries)
+
 rule target_trim:
     input:
         expand("results/01_trim/{sample}_trimmed_1P.fastq", sample=samples)
