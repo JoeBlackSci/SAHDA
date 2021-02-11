@@ -7,45 +7,70 @@
 ### Initalisation ###
 #####################
 
-# Set the workflow configuaration file (not currently in use)
-# configfile: "config/config.yml"
+# Set the workflow configuaration file
+configfile: "config/config.yaml"
 
 # Setting variables
-## Global variables
+samples = config["Samples"]
+queries = config["Queries"]
 
-### Set samples
-# Each set of samples in their own folder with a fasta adapter file
-# if config["samples"]:
-#     samples = config["samples"]
-# else:
-#     from os import listdir
-
-samples = ["SRR3740251", "SRR3740249", "SRR3740250"]
-queries = ["CYP-51", "Mycgr3T94552"]
+# Check lists
+print(samples)
+print(queries)
 
 ## Trimmomatic parametres
 TRIMMOMATIC_OPTIONS = ["LEADING:5 TRAILING:5 SLIDINGWINDOW:4:15 MINLEN:45"]
 
-
-
-
 ####################
 ### Target Rules ###
 ####################
-rule target:
+rule target_trim:
     input:
-        # expand("results/01_trim/{sample}_trimmed_1P.fastq", sample=samples)
-        # expand("results/02_assemble/{sample}_assembled/contigs.fasta", sample=samples),
-        # expand("results/03_blastdb/{sample}_blastdb/{sample}_assembly.fasta", sample=samples),
-        # expand("results/04_search/{query}/{query}_{sample}.txt", query=queries, sample=samples)
-        # expand("results/05_retrieve/{query}/{query}_{sample}_retrieved.fasta", query=queries, sample=samples)
+        expand("results/01_trim/{sample}_trimmed_1P.fastq", sample=samples)
+
+rule target_assemble:
+    input:
+        expand("results/02_assemble/{sample}_assembled/contigs.fasta", sample=samples)
+
+rule target_blast:
+    input:
+        expand("results/03_blastdb/{sample}_blastdb/{sample}_assembly.fasta", sample=samples)
+
+rule target_search:
+    input:
+        expand("results/04_search/{query}/{query}_{sample}.txt", query=queries, sample=samples)
+
+rule target_retreive:
+    input:
+        expand("results/05_retrieve/{query}/{query}_{sample}_retrieved.fasta", query=queries, sample=samples)
+
+rule target_align:
+    input:
         expand("results/07_align/{query}_aligned.fasta", query=queries)
 
 ######################
 ### Workflow Rules ###
 ######################
 
+rule file_append:
+    input:
+        L1_R1="resources/reads/{sample}_L001_R1.fastq.gz",
+        L1_R2="resources/reads/{sample}_L001_R2.fastq.gz",
+        L2_R1="resources/reads/{sample}_L002_R1.fastq.gz",
+        L2_R2="resources/reads/{sample}_L002_R2.fastq.gz"
+    output:
+        R1="resources/00_append/{sample}_R1.fastq.gz",
+        R2="resources/00_append/{sample}_R2.fastq.gz"
+    log:
+        "logs/00_append/{sample}.log"
+    shell:
+        "cat {input.L2_R1} {input.L1_R1} > {output.R1} "
+        "; "
+        "cat {input.L2_R2} {input.L1_R2} > {output.R2}"
+
+
 # Requires Java permission (important for clusters?)
+# Need to switch to the java command
 rule trimmomatic_trim:
     input:
         R1="resources/reads/{sample}_R1.fastq.gz",
@@ -72,6 +97,34 @@ rule trimmomatic_trim:
         "ILLUMINACLIP:{input.adapters}{params.adapt_op} " # adapter sequence and options
         "{params.trim_op} " # Options
         "2> {log}" # log output
+
+rule trimmomatic_trim_alt:
+    input:
+        R1="resources/00_append/{sample}_R1.fastq.gz",
+        R2="resources/00_append/{sample}_R2.fastq.gz",
+        adapters="resources/adapters/NexteraPE-PE.fa"
+    output:
+        "results/01_trim/{sample}_trimmed_1P.fastq",
+        "results/01_trim/{sample}_trimmed_1U.fastq",
+        "results/01_trim/{sample}_trimmed_2P.fastq",
+        "results/01_trim/{sample}_trimmed_2U.fastq"
+    params:
+        baseout="results/01_trim/{sample}_trimmed.fastq",
+        adapt_op=":2:30:10",
+        trim_op=TRIMMOMATIC_OPTIONS
+        # Can add in options here from a lsit specified in config.
+    conda:
+        "envs/env_trimmomatic.yml"
+    log:
+        "logs/01_trim/{sample}.log"
+    shell:
+        "trimmomatic PE " # Core command
+        "{input.R1} {input.R2} " # Inputs
+        "-baseout {params.baseout} " # Output flag
+        "ILLUMINACLIP:{input.adapters}{params.adapt_op} " # adapter sequence and options
+        "{params.trim_op} " # Options
+        "2> {log}" # log output
+
 
 # provide in order of input size?
 # any extra parametres to include?
@@ -174,12 +227,6 @@ rule blasttogff:
         "-p {params.centCover} " # minimum percent result coverage
         "2> {log}" # log
 
-# rule multiple_alignment:
-# Comparison: doi: 10.1186/1748-7188-9-4
-# Chose MAFFT for reasons of accurary, recently increased speed and documentation
-# Got to think about inputs
-
-# Is rule correct? input might be werid
 
 rule target_condense:
     input:
@@ -191,7 +238,10 @@ rule target_condense:
     shell:
         "cat {input}/*_retrieved.fasta > {output}"
 
-
+# rule multiple_alignment:
+# Comparison: doi: 10.1186/1748-7188-9-4
+# Chose MAFFT for reasons of accurary, recently increased speed and documentation
+# Got to think about inputs
 
 rule mafft_align:
     input:
@@ -203,9 +253,8 @@ rule mafft_align:
     conda:
         "envs/env_mafft.yml"
     shell:
-        "mafft {input} > {output} 2> {log}"
-
-
+        "mafft {input} > {output} "
+        "2> {log}"
 
 
 # https://snakemake.readthedocs.io/en/stable/project_info/faq.html#how-do-i-run-my-rule-on-all-files-of-a-certain-directory
