@@ -1,4 +1,4 @@
-Mycogenomics Genome Assembly and Query Workflow
+Mycogenomics Genome Assembly and Target Gene Multiple Alignment Workflow
 ================================================
 
 [![Version](https://img.shields.io/badge/Version-1.0.0-green)](https://github.com/JoeBlackSci/genome_assembly_mp1)
@@ -7,10 +7,9 @@ Mycogenomics Genome Assembly and Query Workflow
 
 <img align="left" width="200" src="ZPic.png" style="padding-right: 10px">
 
-|       **Document:**|    |
+|     **Authors:**| J. Blackwell, M. McDonald |
 |-------------------:|:---|
-| **Creation Date:** |    |
-|        **Author:** | J. Blackwell, M. McDonald |
+| **Creation Date:** | 12-02-2020   |
 |       **License:** |    |
 |       **Contact:** | j.blackwell@warwick.ac.uk |
 
@@ -18,26 +17,29 @@ Mycogenomics Genome Assembly and Query Workflow
 <br>
 <br>
 
-> **Overview:** Workflow tool designed to detect and analyse genes of interest within small haplotype genomes. The workflow will compile haploid genomes, create a local database and query genes of interest. Where genes of interest are detected, a multiple alignment is performed for each target gene and a map of samples with common alleles generated.
+> **Overview:** Workflow tool designed identify gen and analyse genes of interest within small haplotype genomes. The workflow will compile haploid genomes, create a local database and query genes of interest. Where genes of interest are detected, a multiple alignment is performed for each target gene and a map of samples with common alleles generated.
 
 ## Method
 ### Inputs
-+ Raw fastq reads (2 or 4 files due to lane)
-+ Reference genome
-+ Query gene sequences
-+ Adaptor sequence
+* Short-read paired end fastq files.
+* Query gene fasta files.
+* Adapter fasta file.
 
 ### Steps
 1. Trimming \[[trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic)\]
 1. ? Quality control
 1. Denovo assembly \[[SPAdes](https://cab.spbu.ru/software/spades/)\]
 1. Create local BLAST databases for each contigs \[[BLAST+](https://www.ncbi.nlm.nih.gov/books/NBK279690/)\]
-    1. ? Write all databases to a centralised folder
 1. Query each databse for sequence \[[BLAST+](https://www.ncbi.nlm.nih.gov/books/NBK279690/)\]
-1. Extract sequence from the database (python script)
-    1. Ensure correct orientiation
-1. Perform multiple alignment for each identified gene (MAFFT for adding in more alignments?)
-1. Generate a map of common alleles
+1. Extract sequence from the database \[[BLASTtoGFF](https://doi.org/10.1016/j.fgb.2015.04.012)\]
+1. Perform multiple alignment for each identified gene \[[MAFFT](https://mafft.cbrc.jp/alignment/software/)\]
+
+### Outputs
+* Trimmed fastq files.
+* Sample denovo genome assembly.
+* Local genome blast database.
+* Extracted BLAST hits for query genes.
+* Multiple alignment between samples for query gene.
 
 
 ## Tutorial
@@ -89,24 +91,25 @@ conda activate env_snakemake_mgw
 #### Paired end reads
 This workflow will accept paired-end short read sequences with filenames of the following formats.
 ```
-<sample_name>_<total_sequences>_<R1/R2>.fastq.gz
-<sample_name>_<total_sequences>_<R1/R2>.fastq
+<sample_name>_<R1/R2>.fastq.gz
 <sample_name>_<lane_no>_<R1/R2>.fastq.gz
-<sample_name>_<lane_no>_<R1/R2>.fastq
 ```
+##### Example filenames
+```
+SRRXXXXXXX_R1.fastq.gz
+AAAXXXX_L001_R1.fastq.gz
+```
+
+> Note: The workflow only supports samples spread over two lanes. i.e. only L001 and L002 are currently supported.
 
 #### Adapters
-```
-adaptor format
-```
+The adapter file, in `.fasta` format, should be added to the `resources/adapters` file and the full filename specified in the `config/config.yml` file.
 
 #### Target gene database
-```
-target gene databse
-```
+Query genes should be added as individual `.fasta` files to the `resources/query` folder with the format `<gene_query>.fasta`.
 
 ### Configuration
-
+The workflow configuration file `config/config.yml` can be edited to specify parameters for the workflow. Including samples, query genes and trimming options.
 
 ### Running the Workflow
 #### Setup
@@ -114,14 +117,14 @@ If not already done so, navigate to the top level directory (containing this REA
 ```
 conda activate env_snakemake_mgw
 ```
-Add the data required for the analysis to the appropriate resources folders (??? or link to it via the config).
+Add the data required for the analysis to the appropriate resources folders.
 
-Edit the config.yml file to your specifications.
+Edit the config.yml file to specify the names of samples and query genes.
 
 #### Executing the Workflow
 To execute the default workflow run the following command.
 ```
-snakemake --cores all
+snakemake --cores all --use-conda
 ```
 > Note this will use the maximum cores available on your local machine. To specify the number of cores use `--cores N` where N is the maximum number of cores to be assigned.
 
@@ -150,11 +153,9 @@ For a full list of snakemake parameters see the [snakemake documentation](https:
 `--list-input-changes` gives a list of output files that are affected by the inclusion of new data. This can be used to automatically trigger a `--forceun` with the following code.
 
 ```
-snakemake -cores all --forcerun $(snakemake --list-input-changes)
+snakemake -cores all --forcerun $(snakemake --list-input-changes) --use-conda
 ```
 
 ### High Compute Cluster Execution
 
 ## Motivation
-
-## Documentation
