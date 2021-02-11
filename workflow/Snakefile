@@ -28,6 +28,7 @@ TRIMMOMATIC_OPTIONS = config["Trimmomatic_options"]
 ####################
 ### Target Rules ###
 ####################
+
 rule target_default:
     input:
         expand("results/07_align/{query}_aligned.fasta", query=queries)
@@ -105,7 +106,7 @@ rule trimmomatic_trim:
         "{params.trim_op} " # Options
         "2> {log}" # log output
 
-rule trimmomatic_trim_alt:
+rule trimmomatic_trim_lanes:
     input:
         R1="resources/00_append/{sample}_R1.fastq.gz",
         R2="resources/00_append/{sample}_R2.fastq.gz",
@@ -131,10 +132,6 @@ rule trimmomatic_trim_alt:
         "{params.trim_op} " # Options
         "2> {log}" # log output
 
-
-# provide in order of input size?
-# any extra parametres to include?
-# need to append the unpaired reads?
 rule spades_assembly:
     input:
         P1="results/01_trim/{sample}_trimmed_1P.fastq",
@@ -157,12 +154,6 @@ rule spades_assembly:
         "-o {params} " # output directory
         "2> {log}" # log
 
-# rename each contig to have a unique identifier for retreval?
-# or is it enough that each will be in its own db?
-# Maybe best practice to split this into two steps:
-# 1. move fasta file
-# 2. index with makedb
-# Directory here. could be replaced with pram to define folder and have output as a specified file
 rule blast_mkblastdb:
     input:
         "results/02_assemble/{sample}_assembled/contigs.fasta"
@@ -209,6 +200,9 @@ rule blast_search:
         "-out {output} " # output file
         "2> {log}" # log
 
+# working
+# check orientation
+# What if multiple blast hits?
 rule blasttogff:
     input:
         inFasta="resources/query/{query}.fasta",
@@ -233,7 +227,6 @@ rule blasttogff:
         "-p {params.centCover} " # minimum percent result coverage
         "2> {log}" # log
 
-
 rule target_condense:
     input:
         "results/05_retrieve/{query}"
@@ -248,7 +241,7 @@ rule target_condense:
 # Comparison: doi: 10.1186/1748-7188-9-4
 # Chose MAFFT for reasons of accurary, recently increased speed and documentation
 # Got to think about inputs
-
+# Think about performing an additive MA
 rule mafft_align:
     input:
         "results/06_combine/{query}_all.fasta"
