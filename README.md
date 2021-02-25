@@ -9,7 +9,7 @@ Mycogenomics Genome Assembly and Target Gene Multiple Alignment Workflow
 
 |       **Authors:** | J. Blackwell, M. McDonald |
 |-------------------:|:--------------------------|
-| **Creation Date:** | 12-02-2020                |
+| **Creation Date:** | 25-02-2020                |
 |       **License:** |                           |
 |       **Contact:** | j.blackwell@warwick.ac.uk |
 
@@ -29,7 +29,7 @@ Mycogenomics Genome Assembly and Target Gene Multiple Alignment Workflow
 
 ### Steps
 1. Trimming \[[trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic)\]
-1. ? Quality control
+1. Quality control [Not yet implemented]
 1. Denovo assembly \[[SPAdes](https://cab.spbu.ru/software/spades/)\]
 1. Create local BLAST databases for each contigs \[[BLAST+](https://www.ncbi.nlm.nih.gov/books/NBK279690/)\]
 1. Query each databse for sequence \[[BLAST+](https://www.ncbi.nlm.nih.gov/books/NBK279690/)\]
