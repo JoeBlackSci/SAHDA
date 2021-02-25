@@ -30,3 +30,10 @@ Adapter_options:
 # Trimmomatic options
 Trimmomatic_options:
   - LEADING:5 TRAILING:5 SLIDINGWINDOW:4:15 MINLEN:45
+
+##########################
+### BLASTtoGFF Options ###
+##########################
+
+Percent_query_coverage:
+  - '50'

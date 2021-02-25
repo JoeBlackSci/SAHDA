@@ -7,10 +7,10 @@ Mycogenomics Genome Assembly and Target Gene Multiple Alignment Workflow
 
 <img align="left" width="200" src="ZPic.png" style="padding-right: 10px">
 
-|     **Authors:**| J. Blackwell, M. McDonald |
-|-------------------:|:---|
-| **Creation Date:** | 12-02-2020   |
-|       **License:** |    |
+|       **Authors:** | J. Blackwell, M. McDonald |
+|-------------------:|:--------------------------|
+| **Creation Date:** | 12-02-2020                |
+|       **License:** |                           |
 |       **Contact:** | j.blackwell@warwick.ac.uk |
 
 <br>

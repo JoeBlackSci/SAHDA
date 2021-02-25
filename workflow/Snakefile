@@ -19,11 +19,16 @@ adapters = config["Adapter_file"]
 ADAPTER_OPTIONS = config["Adapter_options"]
 TRIMMOMATIC_OPTIONS = config["Trimmomatic_options"]
 
+# BLASTtoGFF settings
+PERCENT_QUERY_COVERAGE = config["Percent_query_coverage"]
+
 # Check lists
 # print(samples)
 # print(queries)
 # print(adapters)
+# print(Adapter_options)
 # print(TRIMMOMATIC_OPTIONS)
+# print(PERCENT_QUERY_COVERAGE)
 
 ####################
 ### Target Rules ###
@@ -52,6 +57,10 @@ rule target_search:
 rule target_retreive:
     input:
         expand("results/05_retrieve/{query}/{query}_{sample}_retrieved.fasta", query=queries, sample=samples)
+
+rule target_condense:
+    input:
+        expand("results/06_combine/{query}_all.fasta", query=queries)
 
 rule target_align:
     input:
@@ -200,42 +209,45 @@ rule blast_search:
         "-out {output} " # output file
         "2> {log}" # log
 
+
 # working
 # check orientation
 # What if multiple blast hits?
 rule blasttogff:
     input:
-        inFasta="resources/query/{query}.fasta",
-        refFasta="results/03_blastdb/{sample}_blastdb/{sample}_assembly.fasta",
-        inBlast="results/04_search/{query}/{query}_{sample}.txt"
+        inFasta=expand("resources/query/{query}.fasta", query=queries),
+        refFasta=expand("results/03_blastdb/{sample}_blastdb/{sample}_assembly.fasta", sample=samples),
+        inBlast=expand("results/04_search/{query}/{query}_{sample}.txt", query=queries, sample=samples)
     output:
+        outDirs=expand("results/05_retrieve/{query}/", query=queries)
+    params:
+        centCover=PERCENT_QUERY_COVERAGE,
         outGff="results/05_retrieve/{query}/{query}_{sample}_retrieved.gff",
         outFasta="results/05_retrieve/{query}/{query}_{sample}_retrieved.fasta"
-    params:
-        centCover="50"
     conda:
         "envs/env_biopython.yml"
-    log:
-        "logs/05_retrieve/{query}_{sample}_retrieve.log"
+    # log:
+    #     "logs/05_retrieve/{query}_{sample}_retrieve.log"
     shell:
         "workflow/scripts/BLASTtoGFF.py " # Core command
         "-i {input.inFasta} " # Query fasta
         "-r {input.refFasta} " # Denovo assembly
         "-b {input.inBlast} " # Blast search result
-        "-g {output.outGff} " # gff output
-        "-o {output.outFasta} " # retreived sequence
+        "-g {params.outGff} " # gff output
+        "-o {params.outFasta} " # retreived sequence
         "-p {params.centCover} " # minimum percent result coverage
-        "2> {log}" # log
+        "2> {log} " # log
 
-rule target_condense:
+
+rule fasta_condense:
     input:
         "results/05_retrieve/{query}"
     output:
         "results/06_combine/{query}_all.fasta"
     log:
-        "logs/06_combine/{query}_align.log"
+        "logs/06_combine/{query}_combine.log"
     shell:
-        "cat {input}/*_retrieved.fasta > {output}"
+        "cat {input}/*_retrieved.fasta > {output} 2> {log}"
 
 # rule multiple_alignment:
 # Comparison: doi: 10.1186/1748-7188-9-4
@@ -254,6 +266,5 @@ rule mafft_align:
     shell:
         "mafft {input} > {output} "
         "2> {log}"
-
 
 # https://snakemake.readthedocs.io/en/stable/project_info/faq.html#how-do-i-run-my-rule-on-all-files-of-a-certain-directory

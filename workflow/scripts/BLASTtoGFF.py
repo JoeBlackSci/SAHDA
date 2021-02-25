@@ -12,7 +12,6 @@
 
 # Version 2. Joseph C. Blackwell, January 2021.
 # Updated to python 3.8.5 from 2.7.5
-# Reformated to use 'with' keyword for exception handling
 # Contact Megan McDonald, megan.mcdonald@anu.edu.au
 
 ############### Main ###############
@@ -72,7 +71,7 @@ def main(inFasta=None, refFasta=None, inBlast=None, outGff=None, outFasta=None, 
     # outFasta integrates the name species
 
     # with open(outGff, 'w') as gff_file, open(outFasta, 'w') as fasta_file:
-    gff_file= open(outGff, 'w')
+    gff_file=open(outGff, 'w')
     fasta_file=open(outFasta,'w')
 
     # Initalise old query
