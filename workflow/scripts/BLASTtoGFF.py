@@ -77,7 +77,6 @@ def main(inFasta=None, refFasta=None, inBlast=None, outGff=None, outFasta=None, 
     # Initalise old query
     oldquery = ''
 
-    # ??? for row in reader? (need example/toy data; what format should come out of blast search?)
     for row in reader:
         # Set information from reader rows
         query    = row[0]
@@ -106,7 +105,11 @@ def main(inFasta=None, refFasta=None, inBlast=None, outGff=None, outFasta=None, 
             seq_denovo = Seq(denovo[subject][send:sstart+1])
             seq_denovo = str(seq_denovo.reverse_complement())
 
-        isolate_name = basename(refFasta).rstrip("_assembly.fasta")
+        # Retreive name of subject from input filename
+        try:
+            isolate_name = basename(refFasta).rstrip("_assembly.fasta")
+        except:
+            isolate_name = basename(refFasta)
 
         # write to outGff
         gff_file.write(gff_line + '\n')
@@ -124,7 +127,6 @@ def main(inFasta=None, refFasta=None, inBlast=None, outGff=None, outFasta=None, 
 
 
 # Argument handling
-# ??? what is this bit?
 if __name__ == '__main__':
 
     arg_parser = argparse.ArgumentParser(
@@ -141,7 +143,6 @@ if __name__ == '__main__':
     arg_parser.add_argument("-o", "--outFasta",     default=None, help="Path to output fasta file")
     arg_parser.add_argument("-p", "--percentCover", default=50, type=int, help="Minimum query coverage threshold for hit to be considered, given as int between 1 and 100, default 50")
 
-    # ??? what is this?
     if len(sys.argv) == 1:
         arg_parser.print_help()
         sys.exit(1)
