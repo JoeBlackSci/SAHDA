@@ -1,6 +1,8 @@
 # .gitignore genome_assembly_mp1
 # What files to ignore for version control
+
 .snakemake
 .DS_Store
 .ipynb_checkpoints
+BLACKWELL_LAB-BOOK_Smk_MIBTP_2020.ipynb
 /Manual_HPC/*
