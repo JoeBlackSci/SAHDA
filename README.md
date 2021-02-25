@@ -39,7 +39,7 @@ Mycogenomics Genome Assembly and Target Gene Multiple Alignment Workflow
 * Sample denovo genome assembly.
 * Local genome blast database.
 * Extracted BLAST hits for query genes.
-* Multiple alignment between samples for query gene.
+* Multiple alignment between samples for query genes.
 
 
 ## Tutorial
@@ -139,12 +139,13 @@ snakemake --cores all --use-conda target_trim
 ```
 
 The following is the list of target rules:
-```
+```r
 target_trim       # Trim fastq files
 target_assemble   # Assemble denovo genome
 target_blastdb    # Create local blast database
 target_search     # Search local database for gene query
-target_retreive   # Retrieve identified hit sequences
+target_retrieve   # Retrieve identified hit sequences
+target_condense   # Combine retrieved sequence files
 target_align      # Align retrieved sequences
 ```
 
@@ -161,12 +162,26 @@ For a full list of snakemake parameters see the [snakemake documentation](https:
 
 [`-r --reason`] Print snakemake's reason for executing each job.
 
-[`-R --forcerun`] List the rules that should be re-run. Snakemake does not re-perform analysis if new files are added prior to a step that combines outputs from previous steps. For example if new data has been introduced prior to a multiple alignment.  
+[`-R --forcerun`] List the rules that should be re-run. Snakemake does not re-perform analysis if new files are added prior to a step that combines outputs from previous steps. For example if new data has been introduced prior to a multiple alignment. In these instances `-R mafft-align` would need to be specified. A full list of snakemake rules can be seen in the Rules List.
 
 `--list-input-changes` gives a list of output files that are affected by the inclusion of new data. This can be used to automatically trigger a `--forceun` with the following code.
 
 ```
 snakemake -cores all --forcerun $(snakemake --list-input-changes) --use-conda
+```
+
+### Rules List
+```
+file_append             # Append .fasta.gz files split over multiple lanes
+trimmomatic_trim        # Trim .fasta.gz files
+trimmomatic_trim_lanes  # Variant rule to trim appended files
+spades_assembly         # Construct contig assembly
+blast_mkblastdb         # Make BLAST database for sample assembly
+blast_search            # Search BLAST database for query gene
+blasttogff              # Retrieve identified BLAST sequences
+helper_condense         # Helper rule to identify files to condense
+fasta_condense          # Concatenate retrieved sequences from samples for each query
+mafft_align             # Align retrieved sequences for each query
 ```
 
 ### High Compute Cluster Execution

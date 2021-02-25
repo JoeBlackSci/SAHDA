@@ -3,3 +3,4 @@
 .snakemake
 .DS_Store
 .ipynb_checkpoints
+/Manual_HPC/*

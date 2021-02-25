@@ -100,18 +100,19 @@ def main(inFasta=None, refFasta=None, inBlast=None, outGff=None, outFasta=None, 
         elif sstart <= send:
             gff_line   = "%s\t%s\t%d\t%d" %(subject, query, sstart, send)
             seq_denovo = "%s" %(denovo[subject][sstart:send+1])
-            # ??? any difference to just using str()
 
         elif sstart >= send:
             gff_line   = "%s\t%s\t%d\t%d" %(subject, query, send, sstart)
             seq_denovo = Seq(denovo[subject][send:sstart+1])
             seq_denovo = str(seq_denovo.reverse_complement())
 
+        isolate_name = basename(refFasta).rstrip("_assembly.fasta")
+
         # write to outGff
         gff_file.write(gff_line + '\n')
 
         # write to outFasta
-        fasta_name = ">%s__%s" % (query,subject)
+        fasta_name = ">%s__%s" % (isolate_name, subject)
         fasta_file.write(fasta_name + '\n')
         fasta_file.write(seq_denovo + '\n')
 
