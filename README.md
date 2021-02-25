@@ -173,6 +173,10 @@ snakemake -cores all --forcerun $(snakemake --list-input-changes) --use-conda
 ```
 
 ### Rules List
+
+![DAG](dag.svg "A directed graph of rule dependancies")
+
+
 ```
 file_append             # Append .fasta.gz files split over multiple lanes
 trimmomatic_trim        # Trim .fasta.gz files
