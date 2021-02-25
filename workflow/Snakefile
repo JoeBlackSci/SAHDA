@@ -36,7 +36,7 @@ PERCENT_QUERY_COVERAGE = config["Percent_query_coverage"]
 
 rule target_default:
     input:
-        expand("results/07_align/{query}_aligned.fasta", query=queries)
+        expand("results/08_align/{query}_aligned.fasta", query=queries)
 
 rule target_trim:
     input:
@@ -60,11 +60,11 @@ rule target_retreive:
 
 rule target_condense:
     input:
-        expand("results/06_combine/{query}_all.fasta", query=queries)
+        expand("results/07_combine/{query}_all.fasta", query=queries)
 
 rule target_align:
     input:
-        expand("results/07_align/{query}_aligned.fasta", query=queries)
+        expand("results/08_align/{query}_aligned.fasta", query=queries)
 
 ######################
 ### Workflow Rules ###
@@ -215,37 +215,48 @@ rule blast_search:
 # What if multiple blast hits?
 rule blasttogff:
     input:
-        inFasta=expand("resources/query/{query}.fasta", query=queries),
-        refFasta=expand("results/03_blastdb/{sample}_blastdb/{sample}_assembly.fasta", sample=samples),
-        inBlast=expand("results/04_search/{query}/{query}_{sample}.txt", query=queries, sample=samples)
+        inFasta="resources/query/{query}.fasta",
+        refFasta="results/03_blastdb/{sample}_blastdb/{sample}_assembly.fasta",
+        inBlast="results/04_search/{query}/{query}_{sample}.txt"
     output:
-        outDirs=expand("results/05_retrieve/{query}/", query=queries)
+        outGff="results/05_retrieve/{query}/{query}_{sample}_retrieved.gff",
+        outFasta="results/05_retrieve/{query}/{query}_{sample}_retrieved.fasta",
     params:
         centCover=PERCENT_QUERY_COVERAGE,
-        outGff="results/05_retrieve/{query}/{query}_{sample}_retrieved.gff",
-        outFasta="results/05_retrieve/{query}/{query}_{sample}_retrieved.fasta"
     conda:
         "envs/env_biopython.yml"
-    # log:
-    #     "logs/05_retrieve/{query}_{sample}_retrieve.log"
+    log:
+        "logs/05_retrieve/{query}_{sample}_retrieve.log"
     shell:
         "workflow/scripts/BLASTtoGFF.py " # Core command
         "-i {input.inFasta} " # Query fasta
         "-r {input.refFasta} " # Denovo assembly
         "-b {input.inBlast} " # Blast search result
-        "-g {params.outGff} " # gff output
-        "-o {params.outFasta} " # retreived sequence
+        "-g {output.outGff} " # gff output
+        "-o {output.outFasta} " # retreived sequence
         "-p {params.centCover} " # minimum percent result coverage
         "2> {log} " # log
+
+rule helper:
+    input:
+        expand("results/05_retrieve/{query}/{query}_{sample}_retrieved.fasta", query=queries, sample=samples)
+    output:
+        directory("results/06_helper/{query}/")
+    params:
+        "results/05_retrieve/{query}"
+    log:
+        "logs/06_helper/{query}_helper.log"
+    shell:
+        "cp -r {params} {output} 2> {log}"
 
 
 rule fasta_condense:
     input:
-        "results/05_retrieve/{query}"
+        "results/06_helper/{query}"
     output:
-        "results/06_combine/{query}_all.fasta"
+        "results/07_combine/{query}_all.fasta"
     log:
-        "logs/06_combine/{query}_combine.log"
+        "logs/07_combine/{query}_combine.log"
     shell:
         "cat {input}/*_retrieved.fasta > {output} 2> {log}"
 
@@ -256,11 +267,11 @@ rule fasta_condense:
 # Think about performing an additive MA
 rule mafft_align:
     input:
-        "results/06_combine/{query}_all.fasta"
+        "results/07_combine/{query}_all.fasta"
     output:
-        "results/07_align/{query}_aligned.fasta"
+        "results/08_align/{query}_aligned.fasta"
     log:
-        "logs/07_align/{query}_align.log"
+        "logs/08_align/{query}_align.log"
     conda:
         "envs/env_mafft.yml"
     shell:

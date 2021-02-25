@@ -1,7 +1,7 @@
 Mycogenomics Genome Assembly and Target Gene Multiple Alignment Workflow
 ================================================
 
-[![Version](https://img.shields.io/badge/Version-1.0.1-green)](https://github.com/JoeBlackSci/genome_assembly_mp1)
+[![Version](https://img.shields.io/badge/Version-1.1.0-green)](https://github.com/JoeBlackSci/genome_assembly_mp1)
 [![Snakemake](https://img.shields.io/badge/snakemake-5.32.0-brightgreen.svg?style=flat)](https://snakemake.readthedocs.io)
 [![Conda](https://img.shields.io/badge/Conda-4.9.2-brightgreen.svg?style=flat)](https://docs.conda.io/projects/conda/en/latest/index.html)
 
