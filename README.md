@@ -183,5 +183,3 @@ helper_condense         # Helper rule to identify files to condense
 fasta_condense          # Concatenate retrieved sequences from samples for each query
 mafft_align             # Align retrieved sequences for each query
 ```
-
-### High Compute Cluster Execution
