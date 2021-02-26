@@ -72,7 +72,7 @@ Mycogenomics Genome Assembly and Target Gene Multiple Alignment Workflow
 
 Included in this repository is a simplified set of example data that is analysed according to the directed acyclic graph graph shown below. As input, there is are two reduced sets of paired-end sequences (one of which is split over multiple lanes), an example adapter file and an example gene query.
 
-<img align="center" width="300" src="images/example_workflow.svg" style="padding-left: 10px">
+<img align="center" src="images/example_workflow.svg" style="padding-left: 10px">
 
 ## Tutorial
 
