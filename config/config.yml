@@ -4,16 +4,12 @@
 
 ## List of paired end samples for assembly.
 Samples:
-  - SRR3740251
-  - SRR3740249
-  - SRR3740250
-  - WAI1848
-  - WAI1849
+  - EXAMPLE1
+  - EXAMPLE2
 
 # List of query genes
 Queries:
-  - CYP-51
-  - Mycgr3T94552
+  - EXAMPLE-QUERY
 
 ###########################
 ### Trimmomatic Options ###
@@ -21,7 +17,7 @@ Queries:
 
 # full name of adapter file
 Adapter_file:
-  - NexteraPE-PE.fa
+  - EXAMPLE-adapters.fa
 
 # Chosen adapter options
 Adapter_options:

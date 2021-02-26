@@ -77,8 +77,8 @@ rule file_append:
         L2_R1="resources/reads/{sample}_L002_R1.fastq.gz",
         L2_R2="resources/reads/{sample}_L002_R2.fastq.gz"
     output:
-        R1="resources/00_append/{sample}_R1.fastq.gz",
-        R2="resources/00_append/{sample}_R2.fastq.gz"
+        R1="results/00_append/{sample}_R1.fastq.gz",
+        R2="results/00_append/{sample}_R2.fastq.gz"
     log:
         "logs/00_append/{sample}.log"
     shell:
@@ -117,8 +117,8 @@ rule trimmomatic_trim:
 
 rule trimmomatic_trim_lanes:
     input:
-        R1="resources/00_append/{sample}_R1.fastq.gz",
-        R2="resources/00_append/{sample}_R2.fastq.gz",
+        R1="results/00_append/{sample}_R1.fastq.gz",
+        R2="results/00_append/{sample}_R2.fastq.gz",
         adapters=expand("resources/adapters/{adapter}", adapter=adapters)
     output:
         "results/01_trim/{sample}_trimmed_1P.fastq",

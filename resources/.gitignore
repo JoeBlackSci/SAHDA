@@ -3,8 +3,7 @@
 ###################
 
 # Ignore all files and folders in this dir...
-*
-*/
+00_append/*
 
 # ... except for this one.
 !.gitignore

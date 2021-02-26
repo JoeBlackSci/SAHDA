@@ -21,7 +21,12 @@ Mycogenomics Genome Assembly and Target Gene Multiple Alignment Workflow
 
 > **Overview:** Workflow tool designed identify and analyse genes of interest within small haplotype genomes. The workflow will compile haploid genomes, create a local database and query genes of interest. Where genes of interest are detected, a multiple alignment is performed for each target gene.
 
+
+
 ## Method
+
+<img align="right" src="dag.svg" >
+
 ### Inputs
 * Short-read paired end fastq files.
 * Query gene fasta files.
@@ -91,6 +96,8 @@ conda activate env_snakemake_mgw
 ### Input data
 
 #### Paired end reads
+Paired end files should be added to the `resources/reads` directory, and the sample name added to the config file described later.
+
 This workflow will accept paired-end short read sequences with filenames of the following formats.
 ```
 <sample_name>_<R1/R2>.fastq.gz
@@ -141,7 +148,7 @@ snakemake --cores all --use-conda target_trim
 ```
 
 The following is the list of target rules:
-```r
+```
 target_trim       # Trim fastq files
 target_assemble   # Assemble denovo genome
 target_blastdb    # Create local blast database

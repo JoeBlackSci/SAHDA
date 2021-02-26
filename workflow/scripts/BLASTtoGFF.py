@@ -65,7 +65,6 @@ def main(inFasta=None, refFasta=None, inBlast=None, outGff=None, outFasta=None, 
     f = open(inBlast, 'rt')
     reader = csv.reader(f, dialect='excel-tab')
 
-
     # Open the output files
     # outGff integrates the isolate name species
     # outFasta integrates the name species
@@ -81,12 +80,12 @@ def main(inFasta=None, refFasta=None, inBlast=None, outGff=None, outFasta=None, 
         # Set information from reader rows
         query    = row[0]
         subject  = row[2]
-        alignlen = row[3]
-        querylen = row[4]
-        qstart   = int(row[5])
-        qend     = int(row[6])
-        sstart   = int(row[8])
-        send     = int(row[9])
+        alignlen = row[9]
+        querylen = row[1]
+        qstart   = int(float(row[5]))
+        qend     = int(float(row[6]))
+        sstart   = int(float(row[3]))
+        send     = int(float(row[4]))
 
         # if the query is equal to old query: discard
         if str(oldquery) == str(query):
