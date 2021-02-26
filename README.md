@@ -25,7 +25,7 @@ Mycogenomics Genome Assembly and Target Gene Multiple Alignment Workflow
 
 ## Method
 
-<img align="right" src="images/example_workflow.svg" >
+<img align="right" width="300" src="images/example_workflow.svg" >
 
 ### Inputs
 * Short-read paired end fastq files.
