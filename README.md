@@ -145,6 +145,8 @@ Query genes should be added as individual `.fasta` files to the `resources/query
 ### Configuration
 The workflow configuration file `config/config.yml` can be edited to specify parameters for the workflow. Including samples, query genes and trimming options.
 
+> Sample names can contain additional underscores, so long are present before `_L00X_RX.fastq.gz` or `_RX.fastq.gz` and are specified in the config. 
+
 ### Running the Workflow
 #### Setup
 If not already done so, navigate to the top level directory (containing this README.md file) and activate the workflow's snakemake environment.
@@ -154,6 +156,8 @@ conda activate env_snakemake_mgw
 Add the data required for the analysis to the appropriate resources folders.
 
 Edit the config.yml file to specify the names of samples and query genes.
+
+> Sample names can contain additional underscores, so long are present before `_L00X_RX.fastq.gz` or `_RX.fastq.gz` and are specified in the config.
 
 #### Executing the Workflow
 To execute the default workflow run the following command.
