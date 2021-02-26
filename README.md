@@ -5,7 +5,7 @@ Mycogenomics Genome Assembly and Target Gene Multiple Alignment Workflow
 [![Snakemake](https://img.shields.io/badge/snakemake-5.32.0-brightgreen.svg?style=flat)](https://snakemake.readthedocs.io)
 [![Conda](https://img.shields.io/badge/Conda-4.9.2-brightgreen.svg?style=flat)](https://docs.conda.io/projects/conda/en/latest/index.html)
 
-<img align="left" width="200" src="ZPic.png" style="padding-right: 10px">
+<img align="left" width="200" src="images/ZPic.png" style="padding-right: 10px">
 
 |       **Authors:** | J. Blackwell, M. McDonald |
 |-------------------:|:--------------------------|
@@ -25,7 +25,7 @@ Mycogenomics Genome Assembly and Target Gene Multiple Alignment Workflow
 
 ## Method
 
-<img align="right" src="dag.svg" >
+<img align="right" src="images/example_workflow.svg" >
 
 ### Inputs
 * Short-read paired end fastq files.
@@ -181,7 +181,7 @@ snakemake -cores all --forcerun $(snakemake --list-input-changes) --use-conda
 
 ### Rules List
 
-<img align="center" src="dag.svg">
+<img align="center" src="images/rules_list.svg">
 
 ```
 file_append             # Append .fasta.gz files split over multiple lanes
