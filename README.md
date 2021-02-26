@@ -23,14 +23,14 @@ Mycogenomics Genome Assembly and Target Gene Multiple Alignment Workflow
 
 ## Contents
 1. Method
-  1. Inputs
-  1. Steps
-  1. Outputs
+    1. Inputs
+    1. Steps
+    1. Outputs
 1. Example Workflow
 1. Tutorial
-  1. Required Software
-  1. Input Data
-  1. Running the Workflow
+    1. Required Software
+    1. Input Data
+    1. Running the Workflow
 1. Rules List
 
 ## Method
