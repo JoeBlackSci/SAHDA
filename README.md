@@ -29,18 +29,8 @@ Mycogenomics Genome Assembly and Target Gene Multiple Alignment Workflow
 1. Example Workflow
 1. Tutorial
   1. Required Software
-    1. Miniconda3
-    1. Mamba
-    1. Snakemake
   1. Input Data
-    1. Paired-end Reads
-    1. Adapters
-    1. Target Genes
   1. Running the Workflow
-    1. Setup
-    1. Executing the Workflow
-    1. Specifying Target Files
-    1. Parameters
 1. Rules List
 
 ## Method
