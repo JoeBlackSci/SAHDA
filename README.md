@@ -21,11 +21,29 @@ Mycogenomics Genome Assembly and Target Gene Multiple Alignment Workflow
 
 > **Overview:** Workflow tool designed identify and analyse genes of interest within small haplotype genomes. The workflow will compile haploid genomes, create a local database and query genes of interest. Where genes of interest are detected, a multiple alignment is performed for each target gene.
 
-
+## Contents
+1. Method
+  1. Inputs
+  1. Steps
+  1. Outputs
+1. Example Workflow
+1. Tutorial
+  1. Required Software
+    1. Miniconda3
+    1. Mamba
+    1. Snakemake
+  1. Input Data
+    1. Paired-end Reads
+    1. Adapters
+    1. Target Genes
+  1. Running the Workflow
+    1. Setup
+    1. Executing the Workflow
+    1. Specifying Target Files
+    1. Parameters
+1. Rules List
 
 ## Method
-
-<img align="right" width="300" src="images/example_workflow.svg" >
 
 ### Inputs
 * Short-read paired end fastq files.
@@ -41,6 +59,8 @@ Mycogenomics Genome Assembly and Target Gene Multiple Alignment Workflow
 1. Extract sequence from the database \[[BLASTtoGFF](https://doi.org/10.1016/j.fgb.2015.04.012)\]
 1. Perform multiple alignment for each identified gene \[[MAFFT](https://mafft.cbrc.jp/alignment/software/)\]
 
+> For a full list of rules and directed graph of workflow, see the Rules List section.
+
 ### Outputs
 * Trimmed fastq files.
 * Sample denovo genome assembly.
@@ -48,10 +68,17 @@ Mycogenomics Genome Assembly and Target Gene Multiple Alignment Workflow
 * Extracted BLAST hits for query genes.
 * Multiple alignment between samples for query genes.
 
+## Example Workflow
+
+<img align="right" width="300" src="images/example_workflow.svg" style="padding-left: 10px">
+
+Included in this repository is a simplified set of example data that is analysed according to the directed acyclic graph graph shown below. As input, there is are two reduced sets of paired-end sequences (one of which is split over multiple lanes), an example adapter file and an example gene query.
+
+
 
 ## Tutorial
 
-### Required software
+### Required Software
 > This workflow requires the installation of miniconda3 and snakemake. It is recommended that mamba is also installed.
 
 These are the methods, as recommended by the [snakemake documentation](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html) for installing the software required for this workflow.
@@ -191,7 +218,7 @@ spades_assembly         # Construct contig assembly
 blast_mkblastdb         # Make BLAST database for sample assembly
 blast_search            # Search BLAST database for query gene
 blasttogff              # Retrieve identified BLAST sequences
-helper_condense         # Helper rule to identify files to condense
+helper_condense         # Helper rule to specify which files to condense
 fasta_condense          # Concatenate retrieved sequences from samples for each query
 mafft_align             # Align retrieved sequences for each query
 ```
