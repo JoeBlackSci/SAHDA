@@ -88,7 +88,7 @@ rule file_append:
 
 
 # Requires Java permission (important for clusters?)
-# Need to switch to the java command
+# Need to switch to the java command?
 rule trimmomatic_trim:
     input:
         R1="resources/reads/{sample}_R1.fastq.gz",
@@ -241,7 +241,7 @@ rule helper_condense:
     input:
         expand("results/05_retrieve/{query}/{query}_{sample}_retrieved.fasta", query=queries, sample=samples)
     output:
-        directory("results/06_helper/{query}/")
+        temp(directory("results/06_helper/{query}/"))
     params:
         "results/05_retrieve/{query}"
     log:
