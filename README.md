@@ -1,7 +1,7 @@
 Mycogenomics Genome Assembly and Target Gene Multiple Alignment Workflow
 ================================================
 
-[![Version](https://img.shields.io/badge/Version-1.1.0-brightgreen)](https://github.com/JoeBlackSci/genome_assembly_mp1)
+[![Version](https://img.shields.io/badge/Version-1.1.1-brightgreen)](https://github.com/JoeBlackSci/genome_assembly_mp1)
 [![Snakemake](https://img.shields.io/badge/snakemake-5.32.0-brightgreen.svg?style=flat)](https://snakemake.readthedocs.io)
 [![Conda](https://img.shields.io/badge/Conda-4.9.2-brightgreen.svg?style=flat)](https://docs.conda.io/projects/conda/en/latest/index.html)
 
@@ -213,14 +213,14 @@ snakemake -cores all --forcerun $(snakemake --list-input-changes) --use-conda
 <img align="center" src="images/rules_list.svg">
 
 ```
-file_append             # Append .fasta.gz files split over multiple lanes
-trimmomatic_trim        # Trim .fasta.gz files
-trimmomatic_trim_lanes  # Variant rule to trim appended files
-spades_assembly         # Construct contig assembly
-blast_mkblastdb         # Make BLAST database for sample assembly
-blast_search            # Search BLAST database for query gene
-blasttogff              # Retrieve identified BLAST sequences
-helper_condense         # Helper rule to specify which files to condense
-fasta_condense          # Concatenate retrieved sequences from samples for each query
-mafft_align             # Align retrieved sequences for each query
+file_append             #00 Append .fasta.gz files split over multiple lanes
+trimmomatic_trim        #01a Trim .fasta.gz files
+trimmomatic_trim_lanes  #01b Variant rule to trim appended files
+spades_assembly         #02 Construct contig assembly
+blast_mkblastdb         #03 Make BLAST database for sample assembly
+blast_search            #04 Search BLAST database for query gene
+blasttogff              #05 Retrieve identified BLAST sequences
+helper_condense         #06 (temp dir) Helper rule to specify which files to condense.
+fasta_condense          #07 Concatenate retrieved sequences from samples for each query
+mafft_align             #08 Align retrieved sequences for each query
 ```
