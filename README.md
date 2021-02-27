@@ -145,7 +145,7 @@ Query genes should be added as individual `.fasta` files to the `resources/query
 ### Configuration
 The workflow configuration file `config/config.yml` can be edited to specify parameters for the workflow. Including samples, query genes and trimming options.
 
-> Sample names can contain additional underscores, so long are present before `_L00X_RX.fastq.gz` or `_RX.fastq.gz` and are specified in the config. 
+> Sample names can contain additional underscores, so long are present before `_L00X_RX.fastq.gz` or `_RX.fastq.gz` and are specified in the config.
 
 ### Running the Workflow
 #### Setup
@@ -190,7 +190,7 @@ target_align      # Align retrieved sequences
 #### Parameters
 For a full list of snakemake parameters see the [snakemake documentation](https://snakemake.readthedocs.io/en/stable/executing/cli.html).
 
-[`--use-conda`] This workflow should always be run with with `--use-conda` flag to enable each rule to download and utilise a specific conda environment.  
+[`--use-conda`] **Required** This workflow should always be run with with `--use-conda` flag to enable each rule to download and utilise a specific conda environment. This ensures a reproducible workflow, but also ensures that required software will not conflict.
 
 [`-j --jobs --cores`] **Required** Specify the maximum number of CPU cores to use in parallel. Specify `all` to use all cores available.
 
