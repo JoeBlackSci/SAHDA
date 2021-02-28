@@ -51,13 +51,13 @@ Mycogenomics Genome Assembly and Target Gene Multiple Alignment Workflow
 * Adapter fasta file.
 
 ### Steps
-1. Trimming \[[trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic)\]
-1. Quality control [Not yet implemented]
-1. Denovo assembly \[[SPAdes](https://cab.spbu.ru/software/spades/)\]
-1. Create local BLAST databases for each contigs \[[BLAST+](https://www.ncbi.nlm.nih.gov/books/NBK279690/)\]
-1. Query each databse for sequence \[[BLAST+](https://www.ncbi.nlm.nih.gov/books/NBK279690/)\]
-1. Extract sequence from the database \[[BLASTtoGFF](https://doi.org/10.1016/j.fgb.2015.04.012)\]
-1. Perform multiple alignment for each identified gene \[[MAFFT](https://mafft.cbrc.jp/alignment/software/)\]
+* Trimming \[[trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic)\]
+* Quality control [Not yet implemented]
+* Denovo assembly \[[SPAdes](https://cab.spbu.ru/software/spades/)\]
+* Create local BLAST databases for each contigs \[[BLAST+](https://www.ncbi.nlm.nih.gov/books/NBK279690/)\]
+* Query each databse for sequence \[[BLAST+](https://www.ncbi.nlm.nih.gov/books/NBK279690/)\]
+* Extract sequence from the database \[[BLASTtoGFF](https://doi.org/10.1016/j.fgb.2015.04.012)\]
+* Perform multiple alignment for each identified gene \[[MAFFT](https://mafft.cbrc.jp/alignment/software/)\]
 
 > For a full list of rules and directed graph of workflow, see the Rules List section.
 
@@ -213,14 +213,14 @@ snakemake -cores all --forcerun $(snakemake --list-input-changes) --use-conda
 <img align="center" src="images/rules_list.svg">
 
 ```
-file_append             #00 Append .fasta.gz files split over multiple lanes
+file_append             #00  Append .fasta.gz files split over multiple lanes
 trimmomatic_trim        #01a Trim .fasta.gz files
 trimmomatic_trim_lanes  #01b Variant rule to trim appended files
-spades_assembly         #02 Construct contig assembly
-blast_mkblastdb         #03 Make BLAST database for sample assembly
-blast_search            #04 Search BLAST database for query gene
-blasttogff              #05 Retrieve identified BLAST sequences
-helper_condense         #06 (temp dir) Helper rule to specify which files to condense.
-fasta_condense          #07 Concatenate retrieved sequences from samples for each query
-mafft_align             #08 Align retrieved sequences for each query
+spades_assembly         #02  Construct contig assembly
+blast_mkblastdb         #03  Make BLAST database for sample assembly
+blast_search            #04  Search BLAST database for query gene
+blasttogff              #05  Retrieve identified BLAST sequences
+helper_condense         #06  (temp dir) Helper rule to specify which files to condense.
+fasta_condense          #07  Concatenate retrieved sequences from samples for each query
+mafft_align             #08  Align retrieved sequences for each query
 ```
