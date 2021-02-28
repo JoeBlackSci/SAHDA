@@ -11,8 +11,11 @@
 configfile: "config/config.yml"
 
 # Setting workflow settings
+reads_dir = str(config["Reads_path"])
 samples = config["Samples"]
 queries = config["Queries"]
+
+print(reads_dir)
 
 # Trimmomatic settings
 adapters = config["Adapter_file"]
@@ -74,10 +77,10 @@ rule target_align:
 # Append fastq files split over multiple lanes
 rule file_append:
     input:
-        L1_R1="resources/reads/{sample}_L001_R1.fastq.gz",
-        L1_R2="resources/reads/{sample}_L001_R2.fastq.gz",
-        L2_R1="resources/reads/{sample}_L002_R1.fastq.gz",
-        L2_R2="resources/reads/{sample}_L002_R2.fastq.gz"
+        L1_R1=reads_dir + "{sample}_L001_R1.fastq.gz",
+        L1_R2=reads_dir + "{sample}_L001_R2.fastq.gz",
+        L2_R1=reads_dir + "{sample}_L002_R1.fastq.gz",
+        L2_R2=reads_dir + "{sample}_L002_R2.fastq.gz"
     output:
         R1="results/00_append/{sample}_R1.fastq.gz",
         R2="results/00_append/{sample}_R2.fastq.gz"
@@ -95,8 +98,8 @@ rule file_append:
 # Trim fastq sequences
 rule trimmomatic_trim:
     input:
-        R1="resources/reads/{sample}_R1.fastq.gz",
-        R2="resources/reads/{sample}_R2.fastq.gz",
+        R1=reads_dir + "{sample}_R1.fastq.gz",
+        R2=reads_dir + "{sample}_R2.fastq.gz",
         adapters=expand("resources/adapters/{adapter}", adapter=adapters)
     output:
         "results/01_trim/{sample}_trimmed_1P.fastq",

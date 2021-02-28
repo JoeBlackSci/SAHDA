@@ -11,6 +11,9 @@ Samples:
 Queries:
   - EXAMPLE-QUERY
 
+Reads_path:
+  - resources/reads/
+
 ###########################
 ### Trimmomatic Options ###
 ###########################
