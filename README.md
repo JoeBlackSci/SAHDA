@@ -19,7 +19,7 @@ Mycogenomics Genome Assembly and Target Gene Multiple Alignment Workflow
 <br>
 <br>
 
-> **Overview:** Workflow tool designed identify and analyse genes of interest within small haplotype genomes. The workflow will compile haploid genomes, create a local database and query genes of interest. Where genes of interest are detected, a multiple alignment is performed for each target gene.
+> **Overview:** Workflow tool designed identify and analyse genes of interest within small haplotype genomes. The workflow will assemble haploid genomes *de novo* from short paired-end reads, create a local BLAST database and query genes of interest. Where genes of interest are detected, a multiple alignment is performed for each gene.
 
 ## Contents
 1. Method
@@ -77,7 +77,7 @@ Included in this repository is a simplified set of example data that is analysed
 ## Tutorial
 
 ### Required Software
-> This workflow requires the installation of miniconda3 and snakemake. It is recommended that mamba is also installed.
+> This workflow requires the installation of miniconda3 and snakemake. It is recommended that mamba is also installed. The workflow will then utilise conda to manage any additional software requirements.
 
 These are the methods, as recommended by the [snakemake documentation](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html) for installing the software required for this workflow.
 
