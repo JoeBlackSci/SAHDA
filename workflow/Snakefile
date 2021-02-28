@@ -29,35 +29,43 @@ PERCENT_QUERY_COVERAGE = config["Percent_query_coverage"]
 
 rule target_default:
     input:
-        expand("results/08_align/{query}_aligned.fasta", query=queries)
+        expand("results/08_align/{query}_aligned.fasta",
+        query=queries)
 
 rule target_trim:
     input:
-        expand("results/01_trim/{sample}_trimmed_1P.fastq", sample=samples)
+        expand("results/01_trim/{sample}_trimmed_1P.fastq",
+        sample=samples)
 
 rule target_assemble:
     input:
-        expand("results/02_assemble/{sample}_assembled/contigs.fasta", sample=samples)
+        expand("results/02_assemble/{sample}_assembled/contigs.fasta",
+        sample=samples)
 
 rule target_blastdb:
     input:
-        expand("results/03_blastdb/{sample}_blastdb/{sample}_assembly.fasta", sample=samples)
+        expand("results/03_blastdb/{sample}_blastdb/{sample}_assembly.fasta",
+        sample=samples)
 
 rule target_search:
     input:
-        expand("results/04_search/{query}/{query}_{sample}.txt", query=queries, sample=samples)
+        expand("results/04_search/{query}/{query}_{sample}.txt",
+        query=queries, sample=samples)
 
 rule target_retrieve:
     input:
-        expand("results/05_retrieve/{query}/{query}_{sample}_retrieved.fasta", query=queries, sample=samples)
+        expand("results/05_retrieve/{query}/{query}_{sample}_retrieved.fasta",
+        query=queries, sample=samples)
 
 rule target_condense:
     input:
-        expand("results/07_combine/{query}_all.fasta", query=queries)
+        expand("results/07_combine/{query}_all.fasta",
+        query=queries)
 
 rule target_align:
     input:
-        expand("results/08_align/{query}_aligned.fasta", query=queries)
+        expand("results/08_align/{query}_aligned.fasta",
+        query=queries)
 
 ######################
 ### Workflow Rules ###
@@ -237,7 +245,8 @@ rule blasttogff:
 # Identify directories to condense
 rule helper_condense:
     input:
-        expand("results/05_retrieve/{query}/{query}_{sample}_retrieved.fasta", query=queries, sample=samples)
+        expand("results/05_retrieve/{query}/{query}_{sample}_retrieved.fasta",
+        query=queries, sample=samples)
     output:
         temp(directory("results/06_helper/{query}/"))
     params:
