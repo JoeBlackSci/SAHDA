@@ -22,13 +22,6 @@ TRIMMOMATIC_OPTIONS = config["Trimmomatic_options"]
 # BLASTtoGFF settings
 PERCENT_QUERY_COVERAGE = config["Percent_query_coverage"]
 
-# Check lists
-# print(samples)
-# print(queries)
-# print(adapters)
-# print(Adapter_options)
-# print(TRIMMOMATIC_OPTIONS)
-# print(PERCENT_QUERY_COVERAGE)
 
 ####################
 ### Target Rules ###
@@ -70,6 +63,7 @@ rule target_align:
 ### Workflow Rules ###
 ######################
 
+# Append fastq files split over multiple lanes
 rule file_append:
     input:
         L1_R1="resources/reads/{sample}_L001_R1.fastq.gz",
@@ -82,13 +76,15 @@ rule file_append:
     log:
         "logs/00_append/{sample}.log"
     shell:
-        "cat {input.L2_R1} {input.L1_R1} > {output.R1} "
+        "cat {input.L2_R1} {input.L1_R1} > {output.R1} " # Append R1 lane 2 to lane 1
         "; "
-        "cat {input.L2_R2} {input.L1_R2} > {output.R2}"
+        "cat {input.L2_R2} {input.L1_R2} > {output.R2}" # Append R2 lane 2 to lane 1
 
 
 # Requires Java permission (important for clusters?)
 # Need to switch to the java command?
+
+# Trim fastq sequences
 rule trimmomatic_trim:
     input:
         R1="resources/reads/{sample}_R1.fastq.gz",
@@ -115,6 +111,7 @@ rule trimmomatic_trim:
         "{params.trim_op} " # Options
         "2> {log}" # log output
 
+# Trim fastq sequences from alternate directory
 rule trimmomatic_trim_lanes:
     input:
         R1="results/00_append/{sample}_R1.fastq.gz",
@@ -141,6 +138,7 @@ rule trimmomatic_trim_lanes:
         "{params.trim_op} " # Options
         "2> {log}" # log output
 
+# Assemble genome De Novo
 rule spades_assembly:
     input:
         P1="results/01_trim/{sample}_trimmed_1P.fastq",
@@ -163,6 +161,7 @@ rule spades_assembly:
         "-o {params} " # output directory
         "2> {log}" # log
 
+# Make a local blast database
 rule blast_mkblastdb:
     input:
         "results/02_assemble/{sample}_assembled/contigs.fasta"
@@ -186,8 +185,7 @@ rule blast_mkblastdb:
         "cp {input} {output.assembly} " # copy fasta assembly
         "2> {log.cpfasta}" # log
 
-# Currently working for just a single query
-# What if there is no results?
+# Query databases for genes of interest
 rule blast_search:
     input:
         query="resources/query/{query}.fasta",
@@ -210,9 +208,8 @@ rule blast_search:
         "2> {log}" # log
 
 
-# working
-# check orientation
-# What if multiple blast hits?
+# Retrieve blast hits from database
+# In case of multiple hits, only first will be retrieved
 rule blasttogff:
     input:
         inFasta="resources/query/{query}.fasta",
@@ -237,6 +234,7 @@ rule blasttogff:
         "-p {params.centCover} " # minimum percent result coverage
         "2> {log} " # log
 
+# Identify directories to condense
 rule helper_condense:
     input:
         expand("results/05_retrieve/{query}/{query}_{sample}_retrieved.fasta", query=queries, sample=samples)
@@ -247,7 +245,7 @@ rule helper_condense:
     log:
         "logs/06_helper/{query}_helper.log"
     shell:
-        "cp -r {params} {output} 2> {log}"
+        "cp -r {params} {output} 2> {log}" # Copy retreived fastas directory to new directroy
 
 
 rule fasta_condense:
@@ -258,9 +256,9 @@ rule fasta_condense:
     log:
         "logs/07_combine/{query}_combine.log"
     shell:
-        "cat {input}/*_retrieved.fasta > {output} 2> {log}"
+        "cat {input}/*_retrieved.fasta > {output} 2> {log}" # Concatenate all retrieved fasta files.
 
-# rule multiple_alignment:
+# Align retreived sequences for each gene of interest.
 # Comparison: doi: 10.1186/1748-7188-9-4
 rule mafft_align:
     input:
@@ -272,5 +270,5 @@ rule mafft_align:
     conda:
         "envs/env_mafft.yml"
     shell:
-        "mafft {input} > {output} "
-        "2> {log}"
+        "mafft {input} > {output} "  # Core command
+        "2> {log}"  # Log
