@@ -134,7 +134,7 @@ rule trimmomatic_trim_lanes:
     log:
         "logs/01_trim/{sample}.log"
     shell:
-        "java -jar trimmomatic-0.39.jar PE " # Core command
+        "trimmomatic PE " # Core command
         "{input.R1} {input.R2} " # Inputs
         "-baseout {params.baseout} " # Output flag
         "ILLUMINACLIP:{input.adapters}{params.adapt_op} " # adapter sequence and options
