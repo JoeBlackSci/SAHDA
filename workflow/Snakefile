@@ -11,11 +11,9 @@
 configfile: "config/config.yml"
 
 # Setting workflow settings
-reads_dir = str(config["Reads_path"])
+reads_dir = config["Reads_path"][0]
 samples = config["Samples"]
 queries = config["Queries"]
-
-print(reads_dir)
 
 # Trimmomatic settings
 adapters = config["Adapter_file"]
