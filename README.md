@@ -74,7 +74,7 @@ Included in this repository is a simplified set of example data that is analysed
 
 <img align="center" src="images/example_workflow.svg" style="padding-left: 10px">
 
-## Tutorial
+## Usage
 
 ### Required Software
 > This workflow requires the installation of miniconda3 and snakemake. It is recommended that mamba is also installed. The workflow will then utilise conda to manage any additional software requirements.
