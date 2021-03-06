@@ -2,7 +2,7 @@
 ### Workflow Options ###
 ########################
 
-## List of paired end samples for assembly.
+## List of paired end sample names for assembly.
 Samples:
   - EXAMPLE1
   - EXAMPLE2
