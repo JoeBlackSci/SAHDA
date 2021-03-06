@@ -149,10 +149,18 @@ The workflow configuration file `config/config.yml` can be edited to specify par
 
 ### Running the Workflow
 #### Setup
-If not already done so, navigate to the top level directory (containing this README.md file) and activate the workflow's snakemake environment.
+To run the workflow, navigate using the commandline to the top level directory (containing this README.md file). 
+```bash
+cd /path/to/genome_assembly_mp1/
 ```
+
+Activate the workflow's snakemake environment.
+```bash
 conda activate env_snakemake_mgw
 ```
+
+> If the snakemake enviroment cannot be activated, ensure that the environment was initially created during initialisation with the `mamba env create -f ./config/env_snakemake_mgw.yml` command.
+
 Add the data required for the analysis to the appropriate resources folders.
 
 Edit the config.yml file to specify the names of samples and query genes.
