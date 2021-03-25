@@ -40,7 +40,7 @@ rule target_trim:
 
 rule target_assemble:
     input:
-        expand("results/02_assemble/{sample}_assembled/contigs.fasta",
+        expand("results/02_assemble/{sample}_assembled/scaffolds.fasta",
         sample=samples)
 
 rule target_blastdb:
@@ -155,7 +155,7 @@ rule spades_assembly:
         U1="results/01_trim/{sample}_trimmed_1U.fastq",
         U2="results/01_trim/{sample}_trimmed_2U.fastq"
     output:
-        "results/02_assemble/{sample}_assembled/contigs.fasta"
+        "results/02_assemble/{sample}_assembled/scaffolds.fasta"
     params:
         "results/02_assemble/{sample}_assembled/"
     conda:
@@ -173,7 +173,7 @@ rule spades_assembly:
 # Make a local blast database
 rule blast_mkblastdb:
     input:
-        "results/02_assemble/{sample}_assembled/contigs.fasta"
+        "results/02_assemble/{sample}_assembled/scaffolds.fasta"
     output:
         dbdir=directory("results/03_blastdb/{sample}_blastdb/"),
         assembly="results/03_blastdb/{sample}_blastdb/{sample}_assembly.fasta"
