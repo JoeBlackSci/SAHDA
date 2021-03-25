@@ -34,8 +34,8 @@ Mycogenomics Genome Assembly and Target Gene Multiple Alignment Workflow
         1. Snakemake
     1. Input Data
         1. Paired-end Reads
-        1. Adapters
-        1. Target Genes
+        1. Adapters fasta file
+        1. Target Genes fasta file
     1. Running the Workflow
         1. Setup
         1. Executing the Workflow
@@ -46,37 +46,49 @@ Mycogenomics Genome Assembly and Target Gene Multiple Alignment Workflow
 ## Method
 
 ### Inputs
-* Short-read paired end fastq files.
-* Query gene fasta files.
-* Adapter fasta file.
-
-### Steps
-* Trimming \[[trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic)\]
-* Quality control [Not yet implemented]
-* Denovo assembly \[[SPAdes](https://cab.spbu.ru/software/spades/)\]
-* Create local BLAST databases for each contigs \[[BLAST+](https://www.ncbi.nlm.nih.gov/books/NBK279690/)\]
-* Query each databse for sequence \[[BLAST+](https://www.ncbi.nlm.nih.gov/books/NBK279690/)\]
-* Extract sequence from the database \[[BLASTtoGFF](https://doi.org/10.1016/j.fgb.2015.04.012)\]
-* Perform multiple alignment for each identified gene \[[MAFFT](https://mafft.cbrc.jp/alignment/software/)\]
-
-> For a full list of rules and directed graph of workflow, see the Rules List section.
+1. Short-read paired end fastq files.
+1. Adapter fasta file.
+1. Query gene fasta files.
 
 ### Outputs
-* Trimmed fastq files.
-* Sample denovo genome assembly.
-* Local genome blast database.
-* Extracted BLAST hits for query genes.
-* Multiple alignment between samples for query genes.
+1. Trimmed fastq files.
+1. Sample denovo genome assembly.
+1. Local genome blast database.
+1. Extracted BLAST hits for query genes.
+1. Multiple alignment between samples for query genes.
 
-## Example Workflow
+### Steps in Workflow
+1. Trimming of raw fastq files \[[trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic)\]
+    1. Requires Inputs 1 and 2 
+    2. Creates Output 1 
+3. Quality control [Not yet implemented]
+4. Denovo assembly \[[SPAdes](https://cab.spbu.ru/software/spades/)\]
+    1. Output 1 is automatically input into this step
+    2. Output 2, contigs.fasta is created in Spades output folder 
+5. Create local BLAST databases for each de novo assembly \[[BLAST+](https://www.ncbi.nlm.nih.gov/books/NBK279690/)\]
+    1. Output 2 is automatically used as input for this step
+    2. Creates Output 3 
+6. Query each assembly BLAST databse with gene of interest \[[BLAST+](https://www.ncbi.nlm.nih.gov/books/NBK279690/)\]
+    1. Requires Input 3
+    2. Uses Input 3 and Output 3 to BLAST gene of interest
+7. Extract sequence from the database \[[BLASTtoGFF](https://doi.org/10.1016/j.fgb.2015.04.012)\]
+    1. Parses BLAST output file with custom Python script called BLASTtoGFF.py
+    2. Creates Output 4 in fasta format
+8. Perform multiple alignment for each identified gene \[[MAFFT](https://mafft.cbrc.jp/alignment/software/)\]
+    1. Takes Output 4 results from all isolates and creates multiple sequence alignment
 
-Included in this repository is a simplified set of example data that is analysed according to the directed acyclic graph graph shown below. As input, there is are two reduced sets of paired-end sequences (one of which is split over multiple lanes), an example adapter file and an example gene query.
+> For a full list of Snakemake rules and directed graph of workflow, see the Rules List section.## Example Workflow
+
+Included in this repository is a simplified set of example data that is analysed according to the directed acyclic graph shown below. This example includes two isolates, one isolate was sequenced on a single lane, the other isolate was sequenced accross two lanes. As input, there are two reduced sets of paired-end sequences (one of which is split over multiple lanes), an example adapter file and an example gene query.
 
 <img align="center" src="images/example_workflow.svg" style="padding-left: 10px">
 
 ## Usage
 
-### Required Software
+### Download this Repository
+> You can download this entire repository as a zip folder (clone dropdown menu) or by using GIT commands (if you know what those are).
+
+### Install Required Software
 > This workflow requires the installation of miniconda3 and snakemake. It is recommended that mamba is also installed. The workflow will then utilise conda to manage any additional software requirements.
 
 These are the methods, as recommended by the [snakemake documentation](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html) for installing the software required for this workflow.
