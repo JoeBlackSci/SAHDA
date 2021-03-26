@@ -105,9 +105,9 @@ def main(inFasta=None, refFasta=None, inBlast=None, outGff=None, outFasta=None, 
             seq_denovo = str(seq_denovo.reverse_complement())
 
         # Retreive name of subject from input filename
-        try:
-            isolate_name = basename(refFasta).rstrip("_assembly.fasta")
-        except:
+        if basename(refFasta).endswith("_assembly.fasta"):
+            isolate_name = basename(refFasta)[:-len("_assembly.fasta")]
+        else:
             isolate_name = basename(refFasta)
 
         # write to outGff
