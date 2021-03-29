@@ -1,4 +1,4 @@
-Mycogenomics Genome Assembly and Target Gene Multiple Alignment Workflow
+SAHDA: Sequence Alignment from Haplotype De Novo Assembly
 ================================================
 
 [![Version](https://img.shields.io/badge/Version-1.2.0-brightgreen)](https://github.com/JoeBlackSci/genome_assembly_mp1)
