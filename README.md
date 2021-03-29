@@ -13,6 +13,7 @@ Mycogenomics Genome Assembly and Target Gene Multiple Alignment Workflow
 |       **License:** | [ Creative Commons Attribution-NonCommercial 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/)|
 |       **Contact:** | j.blackwell@warwick.ac.uk |
 
+<br>
 
 > **Overview:** Workflow tool designed identify and analyse genes of interest within small haplotype genomes. The workflow will assemble haploid genomes *de novo* from short paired-end reads, create a local BLAST database and query genes of interest. Where genes of interest are detected, a multiple alignment is performed for each gene.
 
