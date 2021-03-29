@@ -5,7 +5,7 @@ Mycogenomics Genome Assembly and Target Gene Multiple Alignment Workflow
 [![Snakemake](https://img.shields.io/badge/snakemake-5.32.0-brightgreen.svg?style=flat)](https://snakemake.readthedocs.io)
 [![Conda](https://img.shields.io/badge/Conda-4.9.2-brightgreen.svg?style=flat)](https://docs.conda.io/projects/conda/en/latest/index.html)
 
-<img align="left" width="200" src="images/ZPic.png" style="padding-right: 10px">
+<img align="left" width="150" src="images/ZPic.png" style="padding-right: 10px">
 
 |       **Authors:** | J. Blackwell, M. McDonald |
 |-------------------:|:--------------------------|
@@ -13,8 +13,6 @@ Mycogenomics Genome Assembly and Target Gene Multiple Alignment Workflow
 |       **License:** | [ Creative Commons Attribution-NonCommercial 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/)|
 |       **Contact:** | j.blackwell@warwick.ac.uk |
 
-<br>
-<br>
 <br>
 <br>
 <br>
