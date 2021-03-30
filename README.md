@@ -73,11 +73,40 @@ SAHDA: Sequence Alignment from Haplotype De Novo Assembly
 8. Perform multiple alignment for each identified gene \[[MAFFT](https://mafft.cbrc.jp/alignment/software/)\]
     1. Takes Output 4 results from all isolates and creates multiple sequence alignment
 
-> For a full list of Snakemake rules and directed graph of workflow, see the Rules List section.## Example Workflow
+> For a full list of Snakemake rules and directed graph of workflow, see the Rules List section. 
+
+## Example Workflow
 
 Included in this repository is a simplified set of example data that is analysed according to the directed acyclic graph shown below. This example includes two isolates, one isolate was sequenced on a single lane, the other isolate was sequenced accross two lanes. As input, there are two reduced sets of paired-end sequences (one of which is split over multiple lanes), an example adapter file and an example gene query.
 
 <img align="center" src="images/example_workflow.svg" style="padding-left: 10px">
+
+## File Structure
+After running the workflow to completeion you should expect to see the folowing file structure. If you plan on using an intermediate file such as an assembled genome as an input, run the example workflow once to generate the full file structure. 
+
+```
+genome_assembly_mp1
+├── README.md         # Workflow users guide
+├── config            # Config file for customising the workflow
+├── images            # Images for the README.md document  
+├── logs              # Lists of errors and standard output from the workflow
+├── resources         
+│   ├── adapters      # Adapter files
+│   ├── query         # Query sequences
+│   └── reads         # Sequencing libraries
+├── results           
+│   ├── 00_append     # Appended multi-lane libraries
+│   ├── 01_trim       # Trimmed libraries
+│   ├── 02_assemble   # Assembled Genomes 
+│   ├── 03_blastdb    # Indexed Blast databases of assemblies 
+│   ├── 04_search     # BLAST search results
+│   ├── 05_retrieve   # Retreived sequences of BLAST hits
+│   ├── 07_combine    # Combined retreived sequences 
+│   └── 08_align      # Multiple sequence alignments
+└── workflow
+    ├── envs          # Specifications for software downloads
+    └── scripts       # Custom Python scripts
+```
 
 ## Usage
 
