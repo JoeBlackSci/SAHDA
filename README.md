@@ -23,7 +23,8 @@ SAHDA: Sequence Alignment from Haplotype De Novo Assembly
     1. Steps
     1. Outputs
 1. Example Workflow
-1. Tutorial
+2. File Structure
+3. Tutorial
     1. Required Software
         1. Miniconda3
         1. Mamba
@@ -37,7 +38,7 @@ SAHDA: Sequence Alignment from Haplotype De Novo Assembly
         1. Executing the Workflow
         1. Specifying Target Files
         1. Parameters
-1. Rules List
+4. Rules List
 
 ## Method
 
