@@ -109,7 +109,10 @@ conda install -c conda-forge mamba
 #### Snakemake
 [Snakemake](https://snakemake.readthedocs.io/en/stable/index.html) is a python based workflow management language for reproducible and scalable data analysis. It is recommended to recreate the snakemake environment used to develop this workflow.
 
-To do so, navigate using the commandline, to the top level of the workflow directory (containing this README.md file).
+To do so, navigate using the commandline, to the top level of the workflow directory (containing this README.md file). Use the following command, subsituting the file path with your own.
+```
+cd <path>/<to>/genome_assembly_mp1/
+```
 
 Recreate the snakemake environment from the environment.yml `"env_snakemake_mgw.yml"` file in the config folder.
 ```
