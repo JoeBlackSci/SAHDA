@@ -65,7 +65,7 @@ SAHDA: Sequence Alignment from Haplotype De Novo Assembly
 5. Create local BLAST databases for each de novo assembly \[[BLAST+](https://www.ncbi.nlm.nih.gov/books/NBK279690/)\]
     1. Output 2 is automatically used as input for this step
     2. Creates Output 3 
-6. Query each assembly BLAST databse with gene of interest \[[BLAST+](https://www.ncbi.nlm.nih.gov/books/NBK279690/)\]
+6. Query each assembly BLAST database with gene of interest \[[BLAST+](https://www.ncbi.nlm.nih.gov/books/NBK279690/)\]
     1. Requires Input 3
     2. Uses Input 3 and Output 3 to BLAST gene of interest
 7. Extract sequence from the database \[[BLASTtoGFF](https://doi.org/10.1016/j.fgb.2015.04.012)\]
