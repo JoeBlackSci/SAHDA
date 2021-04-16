@@ -1,7 +1,7 @@
 SAHDA: Sequence Alignment from Haplotype De Novo Assembly
 ================================================
 
-[![Version](https://img.shields.io/badge/Version-1.2.0-brightgreen)](https://github.com/JoeBlackSci/genome_assembly_mp1)
+[![Version](https://img.shields.io/badge/Version-1.2.0-brightgreen)](https://github.com/JoeBlackSci/SAHDA)
 [![Snakemake](https://img.shields.io/badge/snakemake-5.32.0-brightgreen.svg?style=flat)](https://snakemake.readthedocs.io)
 [![Conda](https://img.shields.io/badge/Conda-4.9.2-brightgreen.svg?style=flat)](https://docs.conda.io/projects/conda/en/latest/index.html)
 
@@ -86,7 +86,7 @@ Included in this repository is a simplified set of example data that is analysed
 After running the workflow to completeion you should expect to see the folowing file structure. If you plan on using an intermediate file such as an assembled genome as an input, run the example workflow once to generate the full file structure. 
 
 ```
-genome_assembly_mp1
+SAHDA
 ├── README.md         # Workflow users guide
 ├── config            # Config file for customising the workflow
 ├── images            # Images for the README.md document  
@@ -141,7 +141,7 @@ conda install -c conda-forge mamba
 
 To do so, navigate using the commandline, to the top level of the workflow directory (containing this README.md file). Use the following command, subsituting the file path with your own.
 ```
-cd <path>/<to>/genome_assembly_mp1/
+cd <path>/<to>/SAHDA/
 ```
 
 Recreate the snakemake environment from the environment.yml `"env_snakemake_mgw.yml"` file in the config folder.
@@ -192,7 +192,7 @@ The workflow configuration file `config/config.yml` can be edited to specify par
 #### Setup
 To run the workflow, navigate using the commandline to the top level directory (containing this README.md file). 
 ```bash
-cd /path/to/genome_assembly_mp1/
+cd /path/to/SAHDA/
 ```
 
 Activate the workflow's snakemake environment.
