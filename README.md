@@ -24,7 +24,7 @@ SAHDA: Sequence Alignment from Haplotype De Novo Assembly
     1. Outputs
 1. Example Workflow
 2. File Structure
-3. Tutorial
+3. Usage/Tutorial 
     1. Required Software
         1. Miniconda3
         1. Mamba
@@ -110,6 +110,8 @@ SAHDA
 ```
 
 ## Usage
+
+> 
 
 ### Download this Repository
 > You can download this entire repository as a zip folder (clone dropdown menu) or by using GIT commands (if you know what those are).
