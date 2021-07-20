@@ -1,7 +1,7 @@
 SAHDA: Sequence Alignment from Haplotype De Novo Assembly
 ================================================
 
-[![Version](https://img.shields.io/badge/Version-1.2.0-brightgreen)](https://github.com/JoeBlackSci/genome_assembly_mp1)
+[![Version](https://img.shields.io/badge/Version-1.2.0-brightgreen)](https://github.com/JoeBlackSci/SAHDA)
 [![Snakemake](https://img.shields.io/badge/snakemake-5.32.0-brightgreen.svg?style=flat)](https://snakemake.readthedocs.io)
 [![Conda](https://img.shields.io/badge/Conda-4.9.2-brightgreen.svg?style=flat)](https://docs.conda.io/projects/conda/en/latest/index.html)
 
@@ -23,7 +23,8 @@ SAHDA: Sequence Alignment from Haplotype De Novo Assembly
     1. Steps
     1. Outputs
 1. Example Workflow
-1. Tutorial
+2. File Structure
+3. Usage/Tutorial 
     1. Required Software
         1. Miniconda3
         1. Mamba
@@ -37,7 +38,7 @@ SAHDA: Sequence Alignment from Haplotype De Novo Assembly
         1. Executing the Workflow
         1. Specifying Target Files
         1. Parameters
-1. Rules List
+4. Rules List
 
 ## Method
 
@@ -64,7 +65,7 @@ SAHDA: Sequence Alignment from Haplotype De Novo Assembly
 5. Create local BLAST databases for each de novo assembly \[[BLAST+](https://www.ncbi.nlm.nih.gov/books/NBK279690/)\]
     1. Output 2 is automatically used as input for this step
     2. Creates Output 3 
-6. Query each assembly BLAST databse with gene of interest \[[BLAST+](https://www.ncbi.nlm.nih.gov/books/NBK279690/)\]
+6. Query each assembly BLAST database with gene of interest \[[BLAST+](https://www.ncbi.nlm.nih.gov/books/NBK279690/)\]
     1. Requires Input 3
     2. Uses Input 3 and Output 3 to BLAST gene of interest
 7. Extract sequence from the database \[[BLASTtoGFF](https://doi.org/10.1016/j.fgb.2015.04.012)\]
@@ -73,13 +74,44 @@ SAHDA: Sequence Alignment from Haplotype De Novo Assembly
 8. Perform multiple alignment for each identified gene \[[MAFFT](https://mafft.cbrc.jp/alignment/software/)\]
     1. Takes Output 4 results from all isolates and creates multiple sequence alignment
 
-> For a full list of Snakemake rules and directed graph of workflow, see the Rules List section.## Example Workflow
+> For a full list of Snakemake rules and directed graph of workflow, see the Rules List section. 
+
+## Example Workflow
 
 Included in this repository is a simplified set of example data that is analysed according to the directed acyclic graph shown below. This example includes two isolates, one isolate was sequenced on a single lane, the other isolate was sequenced accross two lanes. As input, there are two reduced sets of paired-end sequences (one of which is split over multiple lanes), an example adapter file and an example gene query.
 
 <img align="center" src="images/example_workflow.svg" style="padding-left: 10px">
 
+## File Structure
+After running the workflow to completeion you should expect to see the folowing file structure. If you plan on using an intermediate file such as an assembled genome as an input, run the example workflow once to generate the full file structure. 
+
+```
+SAHDA
+├── README.md         # Workflow users guide
+├── config            # Config file for customising the workflow
+├── images            # Images for the README.md document  
+├── logs              # Lists of errors and standard output from the workflow
+├── resources         
+│   ├── adapters      # Adapter files
+│   ├── query         # Query sequences
+│   └── reads         # Sequencing libraries
+├── results           
+│   ├── 00_append     # Appended multi-lane libraries
+│   ├── 01_trim       # Trimmed libraries
+│   ├── 02_assemble   # Assembled Genomes 
+│   ├── 03_blastdb    # Indexed Blast databases of assemblies 
+│   ├── 04_search     # BLAST search results
+│   ├── 05_retrieve   # Retreived sequences of BLAST hits
+│   ├── 07_combine    # Combined retreived sequences 
+│   └── 08_align      # Multiple sequence alignments
+└── workflow
+    ├── envs          # Specifications for software downloads
+    └── scripts       # Custom Python scripts
+```
+
 ## Usage
+
+> 
 
 ### Download this Repository
 > You can download this entire repository as a zip folder (clone dropdown menu) or by using GIT commands (if you know what those are).
@@ -109,7 +141,10 @@ conda install -c conda-forge mamba
 #### Snakemake
 [Snakemake](https://snakemake.readthedocs.io/en/stable/index.html) is a python based workflow management language for reproducible and scalable data analysis. It is recommended to recreate the snakemake environment used to develop this workflow.
 
-To do so, navigate using the commandline, to the top level of the workflow directory (containing this README.md file).
+To do so, navigate using the commandline, to the top level of the workflow directory (containing this README.md file). Use the following command, subsituting the file path with your own.
+```
+cd <path>/<to>/SAHDA/
+```
 
 Recreate the snakemake environment from the environment.yml `"env_snakemake_mgw.yml"` file in the config folder.
 ```
@@ -159,7 +194,7 @@ The workflow configuration file `config/config.yml` can be edited to specify par
 #### Setup
 To run the workflow, navigate using the commandline to the top level directory (containing this README.md file). 
 ```bash
-cd /path/to/genome_assembly_mp1/
+cd /path/to/SAHDA/
 ```
 
 Activate the workflow's snakemake environment.
