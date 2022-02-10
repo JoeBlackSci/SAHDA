@@ -61,7 +61,6 @@ SAHDA: Sequence Alignment from Haplotype De Novo Assembly
 1. Trimming of raw fastq files \[[trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic)\]
     1. Requires Inputs 1 and 2 
     2. Creates Output 1 
-3. Quality control [Not yet implemented]
 4. Denovo assembly \[[SPAdes](https://cab.spbu.ru/software/spades/)\]
     1. Output 1 is automatically input into this step
     2. Output 2, contigs.fasta is created in Spades output folder 
