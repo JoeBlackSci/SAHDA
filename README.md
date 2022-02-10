@@ -9,8 +9,9 @@ SAHDA: Sequence Alignment from Haplotype De Novo Assembly
 
 |       **Authors:** | J. Blackwell, M. McDonald |
 |-------------------:|:--------------------------|
-| **Creation Date:** | 25-02-2020                |
-|       **License:** | [ Creative Commons Attribution-NonCommercial 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/)|
+| **Creation Date:** | 25-02-2021                |
+| **Last updated:** | 10-02-2022                |
+|       **License:** | Apache 2.0 with commons clause v1.0|
 |       **Contact:** | j.blackwell@warwick.ac.uk |
 
 <br>
