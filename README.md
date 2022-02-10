@@ -11,11 +11,14 @@ SAHDA: Sequence Alignment from Haplotype De Novo Assembly
 | **Creation Date:** | 25-02-2021                |
 | **Last updated:** | 10-02-2022                |
 |       **License:** | Apache 2.0 with commons clause v1.0|
-|       **Contact:** | j.blackwell@warwick.ac.uk |
+|       **Contact:** | j.blackwell@warwick.ac.uk, m.c.mcdonald@bham.ac.uk |
+
 
 <br>
 
 > **Overview:** Workflow tool designed identify and analyse genes of interest within small haplotype genomes. The workflow will assemble haploid genomes *de novo* from short paired-end reads, create a local BLAST database and query genes of interest. Where genes of interest are detected, a multiple alignment is performed for each gene.
+
+>**Citation:** This workflow has been adapted and improved from this publication: McDonald MC, Renkin M, Spackman M, et al. Rapid Parallel Evolution of Azole Fungicide Resistance in Australian Populations of the Wheat Pathogen Zymoseptoria tritici. Appl Environ Microbiol. 2019;85(4):e01908-18. Published 2019 Feb 6. doi:10.1128/AEM.01908-18
 
 ## Contents
 1. Method
