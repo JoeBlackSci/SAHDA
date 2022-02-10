@@ -3,7 +3,6 @@ SAHDA: Sequence Alignment from Haplotype De Novo Assembly
 
 [![Version](https://img.shields.io/badge/Version-1.2.0-brightgreen)](https://github.com/JoeBlackSci/SAHDA)
 [![Snakemake](https://img.shields.io/badge/snakemake-5.32.0-brightgreen.svg?style=flat)](https://snakemake.readthedocs.io)
-[![Conda](https://img.shields.io/badge/Conda-4.9.2-brightgreen.svg?style=flat)](https://docs.conda.io/projects/conda/en/latest/index.html)
 
 <img align="left" width="125" src="images/ZPic.png" style="padding-right: 10px">
 
