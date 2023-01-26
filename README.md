@@ -113,7 +113,7 @@ SAHDA
 
 ## Usage
 
-> 
+> A full protocol for using this repository can be found on [protocols.io](dx.doi.org/10.17504/protocols.io.q26g78w58lwz/v1).
 
 ### Download this Repository
 > You can download this entire repository as a zip folder (clone dropdown menu) or by using GIT commands (if you know what those are).
